@@ -1,39 +1,21 @@
-# Lunatech Beginner Quarkus Course Student Repository
+## Exercise 16: Dead Letter Queue & Stream filtering
 
-The repository is part of Lunatech's _Beginner Quarkus Course_. It contains 
+In this exercise we will see a method to deal with ‘broken’ messages.
 
-* The skeleton of the application that students build during the course
-* Some useful SQL files and templates that students can use while making this application.
+* Go to the `PriceUpdateStreams`, and change the `process` method so that it no longer changes the `PriceUpdate` when the price is below 30, but rather throws a runtime exception.
+* What happens if you run the application now, and connect a consumer (`curl http://localhost:8080/prices`)?
+* Answer: the stream stops after the failure. This is sometimes the right behaviour (maybe we need to update our application to deal with the messages properly), but sometimes wrong. We want to use the _dead letter_ functionality instead.
+* Add the following config:
 
-The appliction is built during a set of exercises of the course. The exercises themselves *are not* part of this 
-repository.
+      mp.messaging.incoming.raw-price-updates-in.failure-strategy=dead-letter-queue
+      mp.messaging.incoming.raw-price-updates-in.dead-letter-queue.value.serializer=io.quarkus.kafka.client.serialization.ObjectMapperSerializer
 
-## Getting Started
+* Restart the app, and observe that the stream works again (curl http://localhost:8080/prices), although now most of the times you end up with less than 7 updates per 5 seconds. The failures end up in the topic `dead-letter-topic-raw-price-updates-in`. You can easily inspect it with Conduktor.
 
-You should start from the beginning:
+Finally, we want to connect our React frontend to the cool new price-streaming feature. But before we do so, we have to make one more endpoint; that only streams prices for an individual product.
 
-    git checkout start -b exercises
+* Create an endpoint `/prices/{productId}` that returns only the prices for the product with that id. Thinks about the methods you have on `Multi` to achieve this given the `@Channel`-injected `Multi` in the class.
 
-And then do the exercises in [EXERCISES.md](EXERCISES.md)
+Next, we need to update the last remaining feature flag (`reactivePrices`), and take one more look at our Hiquea app. The prices are now updated every five seconds!
 
-## How it works
-
-You can use this repository for two things:
-
-1. As a source of some useful files, in the `materials` directory. This directory is references several times from the
-exercises.
-2. As a way to  _catch up_. Most exercises build on the previous exercise. If you are succesful in all exercises, you 
-can build the entire application yourself. But if you fall behind, or fail to complete an exercise, you can checkout
-   a tag from this repository, and this repository will contain the solution up to there.
-   
-For example, to throw away what you made, and get yourself back on track with the solution of exercise 5, run:
-
-    git reset --hard exercise-5-solution
-
-will get you into a state after exercise 5 has been completed, and with a code base ready to attack exercise #6.
-
-Or, if you prefer to keep what you made, you can continue working on a new branch:
-
-    git checkout exercise-5-solution -b my-new-branchname
-
-
+Congratulations, you have finished all exercises :)

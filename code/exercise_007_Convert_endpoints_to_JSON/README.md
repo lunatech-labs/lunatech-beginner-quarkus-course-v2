@@ -1,39 +1,40 @@
-# Lunatech Beginner Quarkus Course Student Repository
+## Exercise 7a: Convert endpoints to JSON
 
-The repository is part of Lunatech's _Beginner Quarkus Course_. It contains 
+In this exercise, we will abandon our Qute templates, and convert our endpoints to returning JSON instead of HTML. Later, we will hook up a React frontend application to these endpoints.
 
-* The skeleton of the application that students build during the course
-* Some useful SQL files and templates that students can use while making this application.
+* Remove the `@Inject` templates from the `ProductsResource`
+* Make the `products` and `details` method return a JSON representation of a list of products or a single product, respectively, instead. For this you will need to add an `@Produces` annotation with the right `MediaType` either on the class, or on each of the methods.
 
-The appliction is built during a set of exercises of the course. The exercises themselves *are not* part of this 
-repository.
+The following three steps are only useful if you wrote the tests for these endpoints in Exercise #3: 
 
-## Getting Started
+* Extra: Update the tests for the list and details endpoint and make them check for the right content-type.
+* Extra: Update the test for the details endpoint, and use the Json-path expression `name` to test that the value for the url `/products/1` equals "Chair".
+* Extra extra: Change the test to be independent from the database that's started manually, by making use of the Testcontainers project.
+* Bonus solution: Quarkus supports the automatic provisioning of unconfigured services in development and test mode (Dev Services). 
+This means that if you include an extension and don’t configure it then Quarkus will automatically start the relevant service 
+(usually using Testcontainers behind the scenes). After finishing the exercise, do `git checkout exercise-7-solution` 
+and test Testcontainers with DevService. To activate DevService:
+  * Comment all database config in `application.properties`
+    
+             quarkus.datasource.db-kind=postgresql
+             quarkus.datasource.username=postgres
+             quarkus.datasource.password=postgres
+             quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:8765/postgres
+    
+  * Comment `@QuarkusTestResource(PostgresResource.class)` in `ProductsResourceTest` class and start the test
+  
+  Don't forget uncomment database config and `@QuarkusTestResource(PostgresResource.class)` to do next exercise
+## Exercise 7b: Add OpenAPI support and Swagger UI
 
-You should start from the beginning:
+Now, we will be adding OpenAPI support and Swagger UI to our application, so we have better visibility into our REST endpoint. 
 
-    git checkout start -b exercises
+* Add the `quarkus-smallrye-openapi` extension to your application:
+    
+      <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-smallrye-openapi</artifactId>
+      </dependency>
 
-And then do the exercises in [EXERCISES.md](EXERCISES.md)
-
-## How it works
-
-You can use this repository for two things:
-
-1. As a source of some useful files, in the `materials` directory. This directory is references several times from the
-exercises.
-2. As a way to  _catch up_. Most exercises build on the previous exercise. If you are succesful in all exercises, you 
-can build the entire application yourself. But if you fall behind, or fail to complete an exercise, you can checkout
-   a tag from this repository, and this repository will contain the solution up to there.
-   
-For example, to throw away what you made, and get yourself back on track with the solution of exercise 5, run:
-
-    git reset --hard exercise-5-solution
-
-will get you into a state after exercise 5 has been completed, and with a code base ready to attack exercise #6.
-
-Or, if you prefer to keep what you made, you can continue working on a new branch:
-
-    git checkout exercise-5-solution -b my-new-branchname
-
+* Browse to http://localhost:8080/ and observe under _Additional endpoints_, that two new endpoints emerged: `/q/openapi` and `/q/swagger-ui/`
+* Browse to http://localhost:8080/q/swagger-ui/. You will see our four endpoints, and you can try them out in the UI. Try sending some requests to them!
 

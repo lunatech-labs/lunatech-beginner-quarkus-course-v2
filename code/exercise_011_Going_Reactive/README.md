@@ -1,39 +1,28 @@
-# Lunatech Beginner Quarkus Course Student Repository
+## Exercise 11: Going Reactive
 
-The repository is part of Lunatech's _Beginner Quarkus Course_. It contains 
+In this exercise, we will migrate our Hiquea app to the Reactive programming model. For this, we will use RESTeasy Reactive and Hibernate Reactive.
 
-* The skeleton of the application that students build during the course
-* Some useful SQL files and templates that students can use while making this application.
+* Replace in your `pom.xml` the various `quarkus-resteasy` extensions with `quarkus-resteasy-reactive` variants as following: 
+  - `quarkus-resteasy` with `quarkus-resteasy-reactive`
+  - `quarkus-resteasy-jackson` with `quarkus-resteasy-reactive-jackson`.
+  - `quarkus-resteasy-jsonb` with `quarkus-resteasy-reactive-jsonb`.
+  - `quarkus-resteasy-qute` with `quarkus-resteasy-reactive-qute`.
 
-The appliction is built during a set of exercises of the course. The exercises themselves *are not* part of this 
-repository.
+Note: Two extensions `quarkus-resteasy-reactive-jackson` and `quarkus-resteasy-reactive-jsonb` can do JSON serialisation but there is only `quarkus-resteasy-reactive-jackson` has some advanced features that RESTEasy Reactive supports. 
+* Replace `quarkus-jdbc-postgresql` with `quarkus-reactive-pg-client`.
+* Replace `quarkus-hibernate-orm-panache` with `quarkus-hibernate-reactive-panache`
+  
+Note: one of the reasons we removed the `quarkus-hibernate-orm-rest-data-panache` extension in the previous exercise is that there is no reactive replacement for this extension at the time of writing.
 
-## Getting Started
-
-You should start from the beginning:
-
-    git checkout start -b exercises
-
-And then do the exercises in [EXERCISES.md](EXERCISES.md)
-
-## How it works
-
-You can use this repository for two things:
-
-1. As a source of some useful files, in the `materials` directory. This directory is references several times from the
-exercises.
-2. As a way to  _catch up_. Most exercises build on the previous exercise. If you are succesful in all exercises, you 
-can build the entire application yourself. But if you fall behind, or fail to complete an exercise, you can checkout
-   a tag from this repository, and this repository will contain the solution up to there.
+* Remove the setting `quarkus.datasource.jdbc.url`, and replace it with this setting:
+` quarkus.datasource.reactive.url=postgresql://localhost:8765/postgres`
+* Go to your `Product` class. Delete the old `PanacheEntity` import, and find the proper import to use now.
+* Now, go to `ProductsResource`, and make it work again. Note that you can return `Uni` or `Multi` reponses from your resource methods now that you have RESTeasy reactive.
+  Try two options: returning a `Multi<Product>` from the `products()` method, or returning a `Uni<List<Product>>`. What’s the conceptual difference between these?
+* For the `PUT` endpoint, do the following:
+  - Start with `Product.<Product>findById(id)`, and `flatMap` the resulting `Uni`.
+  - Within the `flatMap`, update the product, and invoke `persistAndFlush`
    
-For example, to throw away what you made, and get yourself back on track with the solution of exercise 5, run:
-
-    git reset --hard exercise-5-solution
-
-will get you into a state after exercise 5 has been completed, and with a code base ready to attack exercise #6.
-
-Or, if you prefer to keep what you made, you can continue working on a new branch:
-
-    git checkout exercise-5-solution -b my-new-branchname
-
+    … this will properly ‘chain’ the operations.
+* Check if the frontend still works :)
 

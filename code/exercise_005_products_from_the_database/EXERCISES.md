@@ -1,32 +1,39 @@
-## Exercise 5: Products from the database, using Hibernate + Panache
+# Lunatech Beginner Quarkus Course Student Repository
 
-In this exercise, we will start reading products from the database, rather than from the hardcoded `Products` class. We will use Hibernate + Panache as the ORM, with a Postgres database that we run on Docker using Docker Compose.
+The repository is part of Lunatech's _Beginner Quarkus Course_. It contains 
 
-* In the root of the student app project, there is a `docker-compose.yml`, which contains a single service; a postgres database.
-* Start it up using: `docker-compose up --detach`
-* Next, we need to add some extensions. Add the following to your `pom.xml` in the dependencies section:
+* The skeleton of the application that students build during the course
+* Some useful SQL files and templates that students can use while making this application.
 
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-hibernate-orm-panache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-jdbc-postgresql</artifactId>
-    </dependency>
+The appliction is built during a set of exercises of the course. The exercises themselves *are not* part of this 
+repository.
 
-* Now we need to tell Quarkus where our database lives. Add the following to your `application.properties’:
+## Getting Started
 
-        quarkus.datasource.db-kind=postgresql
-        quarkus.datasource.username=postgres
-        quarkus.datasource.password=postgres
-        quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:8765/postgres
-        quarkus.hibernate-orm.database.generation = drop-and-create
-  
-* Next, make your existing `Product` class extend from `PanacheEntity`, and add an `@Entity` annotation. This makes your `Product` class suitable for _Active Record_-style persistence, where the class you persist has static methods to interact with the storage.
-* Add a default constructor, and make the fields non-final. Also, remove the `id` field from Product, since that field is already defined on `PanacheEntity`.
-* Delete your old `Products` class, and update your `ProductsResource` to use the static methods on `Product` instead.
-* Which methods did you pick?
-* Copy the file `materials/exercise-5/import.sql` to `src/main/resources/import.sql`. Hibernate will automatically pick up this file, and execute its contents after creating the database. The file will populate your database with the HIQUEA products we love so much.
-* Run your app and check if everything still works :)
+You should start from the beginning:
+
+    git checkout start -b exercises
+
+And then do the exercises in [EXERCISES.md](EXERCISES.md)
+
+## How it works
+
+You can use this repository for two things:
+
+1. As a source of some useful files, in the `materials` directory. This directory is references several times from the
+exercises.
+2. As a way to  _catch up_. Most exercises build on the previous exercise. If you are succesful in all exercises, you 
+can build the entire application yourself. But if you fall behind, or fail to complete an exercise, you can checkout
+   a tag from this repository, and this repository will contain the solution up to there.
+   
+For example, to throw away what you made, and get yourself back on track with the solution of exercise 5, run:
+
+    git reset --hard exercise-5-solution
+
+will get you into a state after exercise 5 has been completed, and with a code base ready to attack exercise #6.
+
+Or, if you prefer to keep what you made, you can continue working on a new branch:
+
+    git checkout exercise-5-solution -b my-new-branchname
+
 

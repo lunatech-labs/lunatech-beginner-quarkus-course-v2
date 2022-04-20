@@ -1,56 +1,39 @@
-## Exercise 14: Internal Channels
+# Lunatech Beginner Quarkus Course Student Repository
 
-In this exercise we will start using the Microprofile Reactive Messaging specification to build some streaming stuff!
+The repository is part of Lunatech's _Beginner Quarkus Course_. It contains 
 
-In an ever-demanding market, we just can’t have a furniture store with fixed prices for furniture. Instead, we want new prices for everything, every five seconds!
+* The skeleton of the application that students build during the course
+* Some useful SQL files and templates that students can use while making this application.
 
-We will create a _Generator_ that generates new prices for all our products every five seconds, and connect this stream to other components.
+The appliction is built during a set of exercises of the course. The exercises themselves *are not* part of this 
+repository.
 
-* Add the `quarkus-smallrye-reactive-messaging` extension to your `pom.xml`
-* Copy the two files in `materials/exercise-14` into `src/main/java/com/lunatech/training/quarkus/`. The `PriceUpdate` class represents an updated price for the product with the product id in the class. The `PriceUpdateStream` class is where we will be doing stream generation and processing.
-* Implement the method `public Multi<PriceUpdate> generate()` on the `PriceUpdateStream` class, and make it return a `Multi` that emits a `PriceUpdate` item for each of the products in our database (You can hardcode it to use product ids 1 to 7) *every five seconds*, using a random price between 0 and 100.
-  
-  Tip, look at the `Multi.createFrom().ticks()` method!
-  Note that the `print` method has an `@Incoming` annotation that matches the `@Outgoing` from the `generate` method. Running the application should print seven lines to the console every five seconds, each line being a price update for a product. Run the app to try this :)
+## Getting Started
 
-This demonstrates the _internal channels_ feature of the Reactive Messaging spec. Quarkus will feed the items coming from the outgoing stream from the `generate` method into the `print` method, because they have the same channel name.
+You should start from the beginning:
 
-* What happens if you change the channel name on the `@Incoming` annotation?
+    git checkout start -b exercises
 
-Now, we will create a _processor_; a method that has both an `@Incoming` and an `@Outgoing` annotation.
+And then do the exercises in [EXERCISES.md](EXERCISES.md)
 
-* Create a method `process` that takes a PriceUpdate and returns a PriceUpdate. Add the following annotations:
+## How it works
 
-      @Incoming("raw-price-updates")
-      @Outgoing("price-updates")
+You can use this repository for two things:
 
-  And change the channel name on the `print` method `@Incoming` annotation to `price-updates`
-* Implement the method such that if the `price` field on the `PriceUpdate` is less than 30, 30 is added to it. (We neeeeever want to sell anything for less than 30 euro!)
-* Run the app again, and check if you still see price updates. Notice that you shouldn’t see any more updates with a price less than 30.
+1. As a source of some useful files, in the `materials` directory. This directory is references several times from the
+exercises.
+2. As a way to  _catch up_. Most exercises build on the previous exercise. If you are succesful in all exercises, you 
+can build the entire application yourself. But if you fall behind, or fail to complete an exercise, you can checkout
+   a tag from this repository, and this repository will contain the solution up to there.
+   
+For example, to throw away what you made, and get yourself back on track with the solution of exercise 5, run:
 
-Finally, we will create a `PriceUpdatesResource` class, so we can expose the price updates as Server Sent Events.
+    git reset --hard exercise-5-solution
 
-* Remove the `print` method from the `PriceUpdateStreams` class
-* Create a class `PriceUpdatesResource`
-* Annotate it with `@Path("/prices")`
-* You can inject a `Multi<PriceUpdate>` that’s connected to a stream into the `PriceUpdatesResource` as follows:
+will get you into a state after exercise 5 has been completed, and with a code base ready to attack exercise #6.
 
-      @Channel("price-updates")
-      Multi<PriceUpdate> priceUpdates;
-  
-* `@Channel` is also a Reactive Messaging annotation, and Quarkus will connect this `Multi` to the 'price-updates' channel. This is an alternative method to receive the items in that channel (different from how we did it with an `@Incoming` annotation on the `print` method!)
-* Next, add this method
+Or, if you prefer to keep what you made, you can continue working on a new branch:
 
-      @GET
-      @Produces(MediaType.SERVER_SENT_EVENTS)
-      @RestSseElementType(MediaType.APPLICATION_JSON)
-      public Multi<PriceUpdate> prices() {
-        return priceUpdates;
-      }
+    git checkout exercise-5-solution -b my-new-branchname
 
-* Now, connect to this endpoint using Curl:
-
-      curl localhost:8080/prices
-
-  You should see prices streaming by.
 

@@ -1,39 +1,21 @@
-# Lunatech Beginner Quarkus Course Student Repository
+## Exercise 13: Listen & Notify
 
-The repository is part of Lunatech's _Beginner Quarkus Course_. It contains 
+In this exercise, we will play a bit with Postgres’ `LISTEN / NOTIFY` feature, to get a better grip on reactive streams, and we will also use Server Sent Events.
 
-* The skeleton of the application that students build during the course
-* Some useful SQL files and templates that students can use while making this application.
+The `LISTEN / NOTIFY` feature of Postgres allows you to setup a connection to Postgres, and listen for evens that pass by on a channel, as well as notifying such channels. With the reactive sql clients, we can connect to these channels as a `Multi` in Quarkus.
 
-The appliction is built during a set of exercises of the course. The exercises themselves *are not* part of this 
-repository.
+* Copy the class in `/materials/exercise-13/ListenNotifyResource.java` into `src/main/java/com/lunatech/training/quarkus/`
+* Connect to the channel `milkshakes` using the following cURL command.
 
-## Getting Started
+      curl localhost:8080/channel/milkshakes
 
-You should start from the beginning:
+  Note that it’s expected to ‘hang’; because it’s connecting to a chunked HTTP endpoint and waiting for chunks. 
+  
+* In a different terminal window, run
 
-    git checkout start -b exercises
+		curl -X POST --data "strawberry" localhost:8080/channel/milkshakes 
 
-And then do the exercises in [EXERCISES.md](EXERCISES.md)
-
-## How it works
-
-You can use this repository for two things:
-
-1. As a source of some useful files, in the `materials` directory. This directory is references several times from the
-exercises.
-2. As a way to  _catch up_. Most exercises build on the previous exercise. If you are succesful in all exercises, you 
-can build the entire application yourself. But if you fall behind, or fail to complete an exercise, you can checkout
-   a tag from this repository, and this repository will contain the solution up to there.
-   
-For example, to throw away what you made, and get yourself back on track with the solution of exercise 5, run:
-
-    git reset --hard exercise-5-solution
-
-will get you into a state after exercise 5 has been completed, and with a code base ready to attack exercise #6.
-
-Or, if you prefer to keep what you made, you can continue working on a new branch:
-
-    git checkout exercise-5-solution -b my-new-branchname
-
+	(Or use other flavours of milkshake if you don’t like strawberry). You can run it multiple times.
+* You should see the chunks with the Postgres notifications in JSON format flow by in the first terminal window.
+* Inspect the code. Can you describe what happens?
 
