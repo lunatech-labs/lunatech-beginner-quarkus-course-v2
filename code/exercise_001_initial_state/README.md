@@ -8,7 +8,6 @@ These exercises belong to the Lunatech Beginner Quarkus Course.
 In this exercise, we will be exploring Quarkus, and create a Hello World endpoint.
 
 * This repository contains the start of the student app.
-* Check out the 'start' tag if you haven't yet: `git checkout start`
 * Import the application in your IDE
 * Run the application
 * Browse to http://localhost:8080/. What do you see?
