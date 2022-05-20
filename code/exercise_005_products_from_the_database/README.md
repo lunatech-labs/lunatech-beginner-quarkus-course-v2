@@ -27,6 +27,12 @@ In this exercise, we will start reading products from the database, rather than 
 * Add a default constructor, and make the fields non-final. Also, remove the `id` field from Product, since that field is already defined on `PanacheEntity`.
 * Delete your old `Products` class, and update your `ProductsResource` to use the static methods on `Product` instead.
 * Which methods did you pick?
-* Copy the file `materials/exercise-5/import.sql` to `src/main/resources/import.sql`. Hibernate will automatically pick up this file, and execute its contents after creating the database. The file will populate your database with the HIQUEA products we love so much.
+
+* Pull in a file `import.sql` by executing the following command in a terminal:
+
+`cmtc pull-template src/main/resources/import.sql <root folder of exercise repo>`.
+
+Hibernate will automatically pick up this file, and execute its contents after creating the database. The file will populate your database with the HIQUEA products we love so much.
+
 * Run your app and check if everything still works :)
 
