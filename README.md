@@ -7,4 +7,4 @@ Original authors:
 - Diego Román Rodríguez
 - Alexandre Bensoussan
 - Lan Huong Mai
-- jichay
+- Jérémy Ichay
