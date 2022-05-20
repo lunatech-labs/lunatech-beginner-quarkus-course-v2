@@ -2,7 +2,11 @@
 
 In this exercise we won’t be doing much for HIQUEA, but we’ll practice a little bit with some ArC features!
 
-* Create a class `SubjectBean`, with a public constructor that prints `SubjectBean constructed` and a method `String() subject()` that returns "everyone" (You can also copy this class from `/materials/exercise-6/SubjectBean.java`). Then, add the following to your `GreetingResource` class:
+* Create a class `SubjectBean`, with a public constructor that prints `SubjectBean constructed` and a method `String() subject()` that returns "everyone".
+
+> Note: You can also pull the SubjectBean code by executing this command from the command line: `cmtc pull-template src/main/java/com/lunatech/training/quarkus/SubjectBean.java <root folder of exercise repo>`.
+
+* Next, add the following to your `GreetingResource` class:
 
         @Inject SubjectBean subjectBean;
 
