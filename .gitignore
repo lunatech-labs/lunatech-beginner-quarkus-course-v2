@@ -1,3 +1,14 @@
 # Java build artefacts
 target/
-.idea/
+
+# Maven artifacts
+
+.mvn
+
+# IDE specific artifacts
+
+.idea
+.vscode
+
+# OS specific artifacts
+.DS_Store

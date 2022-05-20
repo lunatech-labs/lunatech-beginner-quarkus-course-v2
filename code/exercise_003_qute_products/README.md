@@ -10,7 +10,7 @@ In this exercise, we will start on the HIQUEA catalogue. We will make two pages,
 
 * Pull in a file `Products.java` by executing the following command in a terminal:
 
-`cmtc pull-template <root folder of exercise repo> src/main/java/com/lunatech/training/quarkus/Products.java`.
+`cmtc pull-template src/main/java/com/lunatech/training/quarkus/Products.java <root folder of exercise repo>`.
 
 * Create a new class named `ProductsResource`
 
