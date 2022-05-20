@@ -7,7 +7,7 @@ Tip: If something fails, you can use [Conductor](https://conduktor.io) to check 
 * Uncomment the 'zookeeper' and 'kafka' services in the `docker-compose.yml`
 * Run `docker-compose up -d`. This will now start Zookeeper and Kafka (next to the still-running Postgres)
 * Add the `quarkus-smallrye-reactive-messaging-kafka` extension to your `pom.xml`
-* Copy the class `PriceUpdateDeserializer.java` from `/materials/exercise-15` into `src/main/java/com/lunatech/training/quarkus`
+* Pull in the class `PriceUpdateDeserializer` by executing this command from the command line: `cmtc pull-template src/main/java/com/lunatech/training/quarkus/PriceUpdateDeserializer.java <root folder of exercise repo>`.
 * On the class `PriceUpdateStreams`:
     - On the `generate` method, change the `@Outgoing` channel name to `raw-price-updates-out`
     - On the `process` method, change the `@Incoming` channel name to `raw-price-updates-in`
@@ -58,4 +58,3 @@ Tip: If something fails, you can use [Conductor](https://conduktor.io) to check 
     * Now you are connected to the container and you can use the same command lines as above but with a bit difference, you have to mention the executable path : bin files are located here `/opt/kafka/bin/`
     * Don’t forget .sh for extension file
       * `/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic price-updates --from-beginning`
-
