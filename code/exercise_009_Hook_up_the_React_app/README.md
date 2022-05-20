@@ -11,6 +11,4 @@ In this exercise we will add a (premade) React frontend to our application. This
         "reactivePrices": false
       }
 
-* Next, copy the files `index.html` and `bundle.min.js` from `/materials/exercise-9` into a new directory `src/main/resources/META-INF/resources`
 * Now, browse to http://localhost:8080/ and you should see the HIQUEA frontend application!
-
