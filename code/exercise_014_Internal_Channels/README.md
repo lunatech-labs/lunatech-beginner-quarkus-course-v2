@@ -7,7 +7,36 @@ In an ever-demanding market, we just can’t have a furniture store with fixed p
 We will create a _Generator_ that generates new prices for all our products every five seconds, and connect this stream to other components.
 
 * Add the `quarkus-smallrye-reactive-messaging` extension to your `pom.xml`
-* Copy the two files in `materials/exercise-14` into `src/main/java/com/lunatech/training/quarkus/`. The `PriceUpdate` class represents an updated price for the product with the product id in the class. The `PriceUpdateStream` class is where we will be doing stream generation and processing.
+
+* Pull in the class `PriceUpdate` by executing this command from the command line: `cmtc pull-template src/main/java/com/lunatech/training/quarkus/PriceUpdate.java <root folder of exercise repo>`. The `PriceUpdate` class represents an updated price for the product with the product id in the class. 
+
+* Create the file `PriceUpdateStream.java` with the following template:
+
+```java
+package com.lunatech.training.quarkus;
+
+import io.smallrye.mutiny.Multi;
+import org.eclipse.microprofile.reactive.messaging.Incoming;
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
+
+import java.util.Random;
+
+public class PriceUpdateStreams {
+
+    private final Random random = new Random();
+
+    @Outgoing("raw-price-updates")
+    public Multi<PriceUpdate> generate() {
+        // To be implemented!
+    }
+
+    @Incoming("raw-price-updates")
+    public void print(PriceUpdate update) {
+        System.out.println("Observed price update: " + update);
+    }
+}
+```
+
 * Implement the method `public Multi<PriceUpdate> generate()` on the `PriceUpdateStream` class, and make it return a `Multi` that emits a `PriceUpdate` item for each of the products in our database (You can hardcode it to use product ids 1 to 7) *every five seconds*, using a random price between 0 and 100.
   
   Tip, look at the `Multi.createFrom().ticks()` method!
@@ -53,4 +82,3 @@ Finally, we will create a `PriceUpdatesResource` class, so we can expose the pri
       curl localhost:8080/prices
 
   You should see prices streaming by.
-
