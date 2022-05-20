@@ -4,7 +4,8 @@ In this exercise, we will play a bit with Postgres’ `LISTEN / NOTIFY` feature,
 
 The `LISTEN / NOTIFY` feature of Postgres allows you to setup a connection to Postgres, and listen for evens that pass by on a channel, as well as notifying such channels. With the reactive sql clients, we can connect to these channels as a `Multi` in Quarkus.
 
-* Copy the class in `/materials/exercise-13/ListenNotifyResource.java` into `src/main/java/com/lunatech/training/quarkus/`
+* Get the code for `ListenNotifyResource` by executing this command from the command line: `cmtc pull-template src/main/java/com/lunatech/training/quarkus/ListenNotifyResource.java <root folder of exercise repo>`.
+
 * Connect to the channel `milkshakes` using the following cURL command.
 
       curl localhost:8080/channel/milkshakes
@@ -18,4 +19,3 @@ The `LISTEN / NOTIFY` feature of Postgres allows you to setup a connection to Po
 	(Or use other flavours of milkshake if you don’t like strawberry). You can run it multiple times.
 * You should see the chunks with the Postgres notifications in JSON format flow by in the first terminal window.
 * Inspect the code. Can you describe what happens?
-
