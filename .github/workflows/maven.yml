@@ -39,4 +39,4 @@ jobs:
         cache: maven
     - name: Test with Maven
       run: mvn -B verify --file pom.xml
-      working-directory: $EXERCISES_DIRECTORY/${{matrix.exercise}}
+      working-directory: ${{env.EXERCISES_DIRECTORY}}/${{matrix.exercise}}
