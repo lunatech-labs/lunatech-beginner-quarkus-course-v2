@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: get-exercises
     strategy:
+      fail-fast: false
       matrix:
         subdir: ${{fromJson(needs.get-exercises.outputs.matrix)}}    
     steps:
