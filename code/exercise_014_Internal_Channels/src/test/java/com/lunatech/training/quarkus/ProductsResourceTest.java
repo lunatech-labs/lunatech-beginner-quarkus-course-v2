@@ -1,16 +1,13 @@
 package com.lunatech.training.quarkus;
 
-import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-@QuarkusTestResource(PostgresResource.class)
 public class ProductsResourceTest {
 
     @Test
@@ -19,18 +16,18 @@ public class ProductsResourceTest {
                 .when().get("/products")
                 .then()
                 .statusCode(200)
-                .contentType(ContentType.JSON).extract().response();
+                .contentType(ContentType.JSON)
+                .body("name[0]", is("Chair"));
     }
 
     @Test
     public void testProductDetailsEndpoint() {
-        Response response = given()
+        given()
                 .when().get("/products/1")
                 .then()
                 .statusCode(200)
-                .contentType(ContentType.JSON).extract().response();
-
-        assertEquals("Chair", response.jsonPath().getString("name"));
+                .contentType(ContentType.JSON)
+                .body("description", is("A metal frame chair, with oak seat"));
     }
 
     @Test
