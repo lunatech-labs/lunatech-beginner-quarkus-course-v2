@@ -1,14 +1,39 @@
-# Java build artefacts
+#Maven
 target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
 
-# Maven artifacts
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
 
-.mvn
-
-# IDE specific artifacts
-
+# IntelliJ
 .idea
-.vscode
+*.ipr
+*.iml
+*.iws
 
-# OS specific artifacts
+# NetBeans
+nb-configuration.xml
+
+# Visual Studio Code
+.vscode
+.factorypath
+
+# OSX
 .DS_Store
+
+# Vim
+*.swp
+*.swo
+
+# patch
+*.orig
+*.rej
+
+# Local environment
+.env
