@@ -1,5 +1,7 @@
 package com.lunatech.training.quarkus;
 
+import io.smallrye.common.annotation.Blocking;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -8,18 +10,21 @@ import java.util.List;
 
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ProductsResource {
 
     @GET
+    @Blocking
     public List<Product> products() {
         return Product.listAll();
     }
 
     @GET
     @Path("{productId}")
+    @Blocking
     public Product details(@PathParam("productId") Long productId) {
         Product product = Product.findById(productId);
-        if(product != null) {
+        if (product != null) {
             return product;
         } else {
             throw new NotFoundException("Product not found");
@@ -31,7 +36,7 @@ public class ProductsResource {
     @Transactional
     public Product update(@PathParam("productId") Long productId, @Valid Product product) {
         Product existing = Product.findById(productId);
-        if(existing == null) {
+        if (existing == null) {
             throw new NotFoundException();
         } else {
             existing.name = product.name;
@@ -41,5 +46,4 @@ public class ProductsResource {
             return existing;
         }
     }
-
 }

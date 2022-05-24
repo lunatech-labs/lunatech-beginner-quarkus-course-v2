@@ -12,5 +12,4 @@ public class SubjectBean {
     public String subject() {
         return "everyone";
     }
-
 }
