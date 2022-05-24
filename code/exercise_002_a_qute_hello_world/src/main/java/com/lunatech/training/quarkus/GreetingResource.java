@@ -10,13 +10,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/")
-@Produces(MediaType.TEXT_PLAIN)
+@Path("/hello")
 public class GreetingResource {
 
     @GET
-    @Path("greet")
-    public String greet() {
+    @Produces(MediaType.TEXT_PLAIN)
+    public String hello() {
         return "Hello, Quarkians!";
     }
 
@@ -24,10 +23,9 @@ public class GreetingResource {
     Template greet;
 
     @GET
-    @Path("hello/{subject}")
+    @Path("{subject}")
+    @Produces(MediaType.TEXT_HTML)
     public TemplateInstance hello(@PathParam("subject") String subject) {
         return greet.data("subject", subject);
     }
-
 }
-

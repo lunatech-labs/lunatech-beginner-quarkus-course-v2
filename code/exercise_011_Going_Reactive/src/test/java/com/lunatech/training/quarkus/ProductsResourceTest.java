@@ -37,5 +37,4 @@ public class ProductsResourceTest {
                 .then()
                 .statusCode(404);
     }
-
 }
