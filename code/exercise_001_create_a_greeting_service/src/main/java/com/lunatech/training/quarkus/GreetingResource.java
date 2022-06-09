@@ -18,14 +18,4 @@ public class GreetingResource {
     public String hello() {
         return "Hello, Quarkians!";
     }
-
-    @Inject
-    Template greet;
-
-    @GET
-    @Path("{subject}")
-    @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance hello(@PathParam("subject") String subject) {
-        return greet.data("subject", subject);
-    }
 }
