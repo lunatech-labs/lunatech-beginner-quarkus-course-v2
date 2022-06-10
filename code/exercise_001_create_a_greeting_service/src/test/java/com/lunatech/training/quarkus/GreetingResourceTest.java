@@ -18,4 +18,16 @@ public class GreetingResourceTest {
                 .statusCode(200)
                 .body(is("Hello, Quarkians!"));
     }
+
+    @Test
+    public void testHelloSubjectEndpoint() {
+        given()
+                .when()
+                .get("hello/world")
+                .then()
+                .statusCode(200)
+                .body(is("Hello world"));
+    }
+
+    
 }
