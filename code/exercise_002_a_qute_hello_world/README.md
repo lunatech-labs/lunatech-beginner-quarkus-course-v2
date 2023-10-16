@@ -9,7 +9,7 @@ You can create one yourself, or fetch on by executing the following command from
 
 <code repo root folder> is the root folder of your exercise repository.
 
-* Inject a `io.quarkus.qute.Template` field with name `greet` using a `javax.inject.Inject` annotation. Quarkus will look for a template with that name, and automatically generate the `Template` object for you!
+* Inject a `io.quarkus.qute.Template` field with name `greet` using a `jakarta.inject.Inject` annotation. Quarkus will look for a template with that name, and automatically generate the `Template` object for you!
 * Make your hello endpoint return `greet.instance()`
 * Check http://localhost:8080/hello/world to see if it works :)
 * Now, change your template to use an expression `{subject}` instead of the hardcoded `World`, and change your resource to supply the subject parameter to the template.

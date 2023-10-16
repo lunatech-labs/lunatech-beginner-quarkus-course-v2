@@ -1,15 +1,15 @@
 package com.lunatech.training.quarkus;
 
-import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
+import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.pgclient.PgPool;
 import io.vertx.mutiny.sqlclient.Tuple;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
@@ -38,7 +38,7 @@ public class ProductsResource {
 
     @PUT
     @Path("{productId}")
-    @ReactiveTransactional
+    @WithTransaction
     public Uni<Product> update(@PathParam("productId") Long productId, @Valid Product product) {
         return Product.<Product>findById(productId).flatMap(p -> {
             if (p == null) {

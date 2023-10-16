@@ -2,7 +2,7 @@ package com.lunatech.training.quarkus;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class FeatureFlags {
