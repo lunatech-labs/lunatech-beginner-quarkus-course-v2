@@ -5,11 +5,12 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.pgclient.PgPool;
 import io.vertx.mutiny.sqlclient.Tuple;
-
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.List;
 
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
@@ -20,8 +21,8 @@ public class ProductsResource {
     PgPool client;
 
     @GET
-    public Multi<Product> products() {
-        return Product.streamAll();
+    public Uni<List<Product>> products() {
+        return Product.listAll();
     }
 
     @GET

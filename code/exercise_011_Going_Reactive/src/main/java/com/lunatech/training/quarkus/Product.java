@@ -1,16 +1,15 @@
 package com.lunatech.training.quarkus;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import org.hibernate.validator.constraints.Length;
-import io.quarkus.hibernate.reactive.panache.PanacheEntity;
-
-import jakarta.persistence.Entity;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+
 import java.math.BigDecimal;
 
 @Entity
