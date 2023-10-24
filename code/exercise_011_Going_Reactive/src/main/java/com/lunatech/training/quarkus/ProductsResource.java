@@ -1,11 +1,7 @@
 package com.lunatech.training.quarkus;
 
-import io.quarkus.hibernate.reactive.panache.common.WithSession;
-import io.quarkus.hibernate.reactive.panache.common.WithSessionOnDemand;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -18,13 +14,7 @@ import java.util.List;
 public class ProductsResource {
 
     @GET
-    public Multi<Product> products() {
-        return getAllProducts().toMulti()
-                .flatMap(list -> Multi.createFrom().iterable(list));
-    }
-
-    @WithTransaction
-    public Uni<List<Product>> getAllProducts(){
+    public Uni<List<Product>> products() {
         return Product.listAll();
     }
 
