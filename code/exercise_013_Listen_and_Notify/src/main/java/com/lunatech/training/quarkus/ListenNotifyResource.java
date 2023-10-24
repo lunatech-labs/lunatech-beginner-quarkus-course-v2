@@ -9,9 +9,9 @@ import io.vertx.mutiny.sqlclient.SqlConnection;
 import io.vertx.pgclient.PgNotification;
 import org.jboss.resteasy.reactive.RestSseElementType;
 
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 @Path("/channel")
 public class ListenNotifyResource {

@@ -17,8 +17,7 @@ Note: one of the reasons we removed the `quarkus-hibernate-orm-rest-data-panache
 * Remove the setting `quarkus.datasource.jdbc.url`, and replace it with this setting:
 ` quarkus.datasource.reactive.url=postgresql://localhost:8765/postgres`
 * Go to your `Product` class. Delete the old `PanacheEntity` import, and find the proper import to use now.
-* Now, go to `ProductsResource`, and make it work again. Note that you can return `Uni` or `Multi` reponses from your resource methods now that you have RESTeasy reactive.
-  Try two options: returning a `Multi<Product>` from the `products()` method, or returning a `Uni<List<Product>>`. What’s the conceptual difference between these?
+* Now, go to `ProductsResource`, and make it work again. Note that you can return `Uni` responses from your resource methods now that you have RESTeasy reactive.
 * For the `PUT` endpoint, do the following:
   - Start with `Product.<Product>findById(id)`, and `flatMap` the resulting `Uni`.
   - Within the `flatMap`, update the product, and invoke `persistAndFlush`

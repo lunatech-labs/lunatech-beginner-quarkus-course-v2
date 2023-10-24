@@ -2,8 +2,8 @@ package com.lunatech.training.quarkus;
 
 import io.smallrye.common.annotation.Blocking;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/products")
