@@ -2,16 +2,14 @@ import ReactDOM from "react-dom/client";
 
 import { useState } from "react";
 
-const Product = ({ name, price, removeItem }) => {
-  return (
-    <div>
-      <button onClick={removeItem}>❌</button>
-      <span>
-        {name} - {price}
-      </span>
-    </div>
-  );
-};
+const Product = ({ name, price, removeItem }) => (
+  <div>
+    <button onClick={removeItem}>❌</button>
+    <span>
+      {name} - {price}
+    </span>
+  </div>
+);
 
 const ProductList = () => {
   const [products, setProducts] = useState([

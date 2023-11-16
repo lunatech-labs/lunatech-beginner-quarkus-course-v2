@@ -2,7 +2,9 @@ import ReactDOM from "react-dom/client";
 
 const Product = ({ name, price }) => (
   <div>
-    <span>{name} - {price}</span>
+    <span>
+      {name} - {price}
+    </span>
   </div>
 );
 
