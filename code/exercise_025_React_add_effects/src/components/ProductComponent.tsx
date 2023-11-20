@@ -10,7 +10,7 @@ interface Props {
 }
 
 type EditStatus =
-  | { type: "Editing"; product: PartialProduct }
+  | { type: "Editing"; product: PartialProduct; error?: string }
   | { type: "Viewing" };
 
 export const ProductComponent: FC<Props> = ({ product }) => {
@@ -22,37 +22,33 @@ export const ProductComponent: FC<Props> = ({ product }) => {
     setEditing({ type: "Editing", product });
 
   const handleDelete = () => {
-    setStatus({ type: "Loading" });
+    setStatus(AsyncResult.pending());
     productService
       .remove(product.id)
       .then(() => dispatch({ type: "Delete", id: product.id }))
-      .catch(() =>
-        setStatus({ type: "Failure", error: "Failed to delete product" })
-      );
+      .catch(() => setStatus(AsyncResult.failure("Failed to delete product")));
   };
 
   const handleUpdate = (toValidate: PartialProduct) => {
-    setStatus({ type: "Loading" });
     const validated = validateProduct(toValidate);
     if (validated.type === "invalid") {
-      setStatus({ type: "Failure", error: validated.msg });
+      setEditing({ type: "Editing", product, error: validated.msg });
     } else {
+      setStatus(AsyncResult.pending());
       productService
         .update(product.id, validated.data)
         .then(() => {
-          setStatus({ type: "Success", data: {} });
+          setStatus(AsyncResult.success({}));
           setEditing({ type: "Viewing" });
           dispatch({ type: "Edit", id: product.id, product: validated.data });
         })
-        .catch(() =>
-          setStatus({ type: "Failure", error: "Failed to edit product" })
-        );
+        .catch(() => setStatus(AsyncResult.failure("Failed to edit product")));
     }
   };
 
-  const pending = status?.type === "Loading";
-
+  const pending = status?.isPending ?? false;
   if (editing.type === "Editing") {
+    const error = editing.error ?? status?.error;
     return (
       <div>
         <button
@@ -68,7 +64,7 @@ export const ProductComponent: FC<Props> = ({ product }) => {
           ✅
         </button>
         <ProductForm product={editing.product} onChange={edit} />
-        {status?.type === "Failure" && <div>{status.error}</div>}
+        {error && <div>{error}</div>}
       </div>
     );
   } else {
@@ -83,7 +79,7 @@ export const ProductComponent: FC<Props> = ({ product }) => {
         <span>
           {product.name} - {product.price}
         </span>
-        {status?.type === "Failure" && <div>{status.error}</div>}
+        {status?.isFailure && <div>{status.error}</div>}
       </div>
     );
   }

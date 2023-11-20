@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import {
   PartialProduct,
   Product,
+  ProductRequest,
   validateProduct,
 } from "~/models/Product";
 import { productService } from "~/services/productService";
@@ -13,7 +14,7 @@ interface Props {
 }
 
 type EditStatus =
-  | { type: "Editing"; product: PartialProduct }
+  | { type: "Editing"; product: PartialProduct; error?: string }
   | { type: "Viewing" };
 
 export const ProductComponent: FC<Props> = ({ product }) => {
@@ -29,25 +30,27 @@ export const ProductComponent: FC<Props> = ({ product }) => {
   });
 
   const editMutation = useMutation({
-    mutationFn: (toValidate: PartialProduct) => {
-      const validated = validateProduct(toValidate);
-      if (validated.type === "invalid") {
-        return Promise.reject(validated.msg);
-      } else {
-        return productService
-          .update(product.id, validated.data)
-          .then(() => validated.data);
-      }
-    },
+    mutationFn: (request: ProductRequest) =>
+      productService.update(product.id, request).then(() => request),
     onSuccess: (editedProduct) => {
       queryClient.setQueryData(["products"], (data: Product[]) =>
         data.map((o) =>
           o.id === product.id ? { id: product.id, ...editedProduct } : o
         )
       );
-      setEditing({ type: "Viewing" });
     },
   });
+
+  const handleUpdate = (toValidate: PartialProduct) => {
+    const validated = validateProduct(toValidate);
+    if (validated.type === "invalid") {
+      setEditing({ type: "Editing", product, error: validated.msg });
+    } else {
+      editMutation
+        .mutateAsync(validated.data)
+        .then(() => setEditing({ type: "Viewing" }));
+    }
+  };
 
   const edit = (product: PartialProduct) =>
     setEditing({ type: "Editing", product });
@@ -56,6 +59,7 @@ export const ProductComponent: FC<Props> = ({ product }) => {
   const isEditing = editMutation.isPending;
 
   if (editing.type === "Editing") {
+    const error = editing.error ?? editMutation.error?.message;
     return (
       <div>
         <button
@@ -66,12 +70,12 @@ export const ProductComponent: FC<Props> = ({ product }) => {
         </button>
         <button
           disabled={isEditing}
-          onClick={() => editMutation.mutate(editing.product)}
+          onClick={() => handleUpdate(editing.product)}
         >
           ✅
         </button>
         <ProductForm product={editing.product} onChange={edit} />
-        {editMutation.isError && <div>{editMutation.error.message}</div>}
+        {error && <div>{error}</div>}
       </div>
     );
   } else {

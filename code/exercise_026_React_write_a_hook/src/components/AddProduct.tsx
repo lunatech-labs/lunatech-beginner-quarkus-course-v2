@@ -7,34 +7,37 @@ import { AsyncResult } from "~/services";
 
 export const AddProduct: FC = () => {
   const [product, setProduct] = useState<PartialProduct>({});
+  const [validationError, setValidationError] = useState<string>();
   const [status, setStatus] = useState<AsyncResult<Product, string>>();
   const dispatch = useContext(ProductDispatchContext);
 
   const handleAdd = () => {
-    setStatus({ type: "Loading" });
     const validated = validateProduct(product);
     if (validated.type === "invalid") {
-      setStatus({ type: "Failure", error: validated.msg });
+      setValidationError(validated.msg);
     } else {
+      setValidationError(undefined);
+      setStatus(AsyncResult.pending());
       productService
         .add(validated.data)
         .then((product) => {
-          setStatus({ type: "Success", data: product });
+          setStatus(AsyncResult.success(product));
           dispatch({ type: "Add", products: [product] });
         })
         .catch(() =>
-          setStatus({ type: "Failure", error: "Error while submiting" })
+          setStatus(AsyncResult.failure("Error while submiting"))
         );
     }
   };
 
+  const error = validationError ?? status?.error
   return (
     <div>
-      <button onClick={handleAdd} disabled={status?.type === "Loading"}>
+      <button onClick={handleAdd} disabled={status?.type === "Pending"}>
         ✅
       </button>
       <ProductForm product={product} onChange={setProduct} />
-      {status?.type === "Failure" && <div>{status.error}</div>}
+      {error && <div>{error}</div>}
     </div>
   );
 };
