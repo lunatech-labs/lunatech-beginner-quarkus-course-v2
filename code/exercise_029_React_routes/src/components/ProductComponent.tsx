@@ -1,12 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
-import {
-  PartialProduct,
-  Product,
-  validateProduct,
-} from "~/models/Product";
-import { productService } from "~/services/productService";
+import { PartialProduct, Product, validateProduct } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
+import { useProductService } from "~/contexts/ProductServiceContext";
 
 interface Props {
   product: Product;
@@ -17,43 +12,31 @@ type EditStatus =
   | { type: "Viewing" };
 
 export const ProductComponent: FC<Props> = ({ product }) => {
+  const productService = useProductService();
+  const deleteMutation = productService.useProductDelete();
+  const editMutation = productService.useProductUpdate();
+  const [validationError, setValidationError] = useState<string>();
   const [editing, setEditing] = useState<EditStatus>({ type: "Viewing" });
-  const queryClient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: () => productService.remove(product.id),
-    onSuccess: () => {
-      queryClient.setQueryData(["products"], (data: Product[]) =>
-        data.filter(({ id }) => id !== product.id)
-      );
-    },
-  });
 
-  const editMutation = useMutation({
-    mutationFn: (toValidate: PartialProduct) => {
-      const validated = validateProduct(toValidate);
-      if (validated.type === "invalid") {
-        return Promise.reject(validated.msg);
-      } else {
-        return productService
-          .update(product.id, validated.data)
-          .then(() => validated.data);
-      }
-    },
-    onSuccess: (editedProduct) => {
-      queryClient.setQueryData(["products"], (data: Product[]) =>
-        data.map((o) =>
-          o.id === product.id ? { id: product.id, ...editedProduct } : o
-        )
-      );
-      setEditing({ type: "Viewing" });
-    },
-  });
+  const handleEdit = (toValidate: PartialProduct) => {
+    setValidationError(undefined);
+    const validated = validateProduct(toValidate);
+    if (validated.type === "invalid") {
+      setValidationError(validated.msg);
+    } else {
+      editMutation
+        .action({ id: product.id, product: validated.data })
+        .then(() => setEditing({ type: "Viewing" }));
+    }
+  };
 
   const edit = (product: PartialProduct) =>
     setEditing({ type: "Editing", product });
 
   const isDeleting = deleteMutation.isPending;
   const isEditing = editMutation.isPending;
+
+  const error = validationError ?? editMutation.error?.message;
 
   if (editing.type === "Editing") {
     return (
@@ -66,18 +49,21 @@ export const ProductComponent: FC<Props> = ({ product }) => {
         </button>
         <button
           disabled={isEditing}
-          onClick={() => editMutation.mutate(editing.product)}
+          onClick={() => handleEdit(editing.product)}
         >
           ✅
         </button>
         <ProductForm product={editing.product} onChange={edit} />
-        {editMutation.isError && <div>{editMutation.error.message}</div>}
+        {error && <div>{error}</div>}
       </div>
     );
   } else {
     return (
       <div>
-        <button disabled={isDeleting} onClick={() => deleteMutation.mutate()}>
+        <button
+          disabled={isDeleting}
+          onClick={() => deleteMutation.action({ id: product.id })}
+        >
           ❌
         </button>
         <button disabled={isDeleting} onClick={() => edit(product)}>
@@ -86,7 +72,7 @@ export const ProductComponent: FC<Props> = ({ product }) => {
         <span>
           {product.name} - {product.price}
         </span>
-        {deleteMutation.isError && <div>{deleteMutation.error.message}</div>}
+        {deleteMutation.isFailure && <div>{deleteMutation.error.message}</div>}
       </div>
     );
   }

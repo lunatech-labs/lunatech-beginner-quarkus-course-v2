@@ -1,39 +1,32 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
-import { PartialProduct, Product, validateProduct } from "~/models/Product";
-import { productService } from "~/services/productService";
+import { PartialProduct, validateProduct } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
+import { useProductService } from "~/contexts/ProductServiceContext";
 
 export const AddProduct: FC = () => {
   const [product, setProduct] = useState<PartialProduct>({});
+  const [validationError, setValidationError] = useState<string>();
+  const productService = useProductService();
+  const addProduct = productService.useProductCreate();
 
-  const queryClient = useQueryClient();
-  const addMutation = useMutation({
-    mutationFn: () => {
-      const validated = validateProduct(product);
-      if (validated.type === "invalid") {
-        return Promise.reject(validated.msg);
-      } else {
-        return productService.add(validated.data);
-      }
-    },
-    onSuccess: (added) =>
-      queryClient.setQueryData(["products"], (data: Product[]) => [
-        ...data,
-        added,
-      ]),
-  });
+  const handleAdd = () => {
+    setValidationError(undefined);
+    const validated = validateProduct(product);
+    if (validated.type === "invalid") {
+      setValidationError(validated.msg);
+    } else {
+      addProduct.action(validated.data);
+    }
+  };
 
+  const error = validationError ?? addProduct.error?.message;
   return (
     <div>
-      <button
-        onClick={() => addMutation.mutate()}
-        disabled={addMutation.isPending}
-      >
+      <button onClick={handleAdd} disabled={addProduct.isPending}>
         ✅
       </button>
       <ProductForm product={product} onChange={setProduct} />
-      {addMutation.isError && <div>{addMutation.error.message}</div>}
+      {error && <div>{error}</div>}
     </div>
   );
 };

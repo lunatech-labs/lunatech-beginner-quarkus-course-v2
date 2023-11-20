@@ -8,11 +8,10 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
 import { Product } from "~/models/Product";
-import { productService } from "~/services/productService";
 import { EditProducDialog } from "./EditProductDialog";
+import { useProductService } from "~/contexts/ProductServiceContext";
 
 interface Props {
   product: Product;
@@ -20,16 +19,8 @@ interface Props {
 
 export const ProductCard: FC<Props> = ({ product }) => {
   const [editing, setEditing] = useState(false);
-
-  const queryClient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: () => productService.remove(product.id),
-    onSuccess: () => {
-      queryClient.setQueryData(["products"], (data: Product[]) =>
-        data.filter(({ id }) => id !== product.id)
-      );
-    },
-  });
+  const productService = useProductService();
+  const deleteMutation = productService.useProductDelete();
 
   return (
     <Card variant="outlined">
@@ -54,7 +45,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
         <LoadingButton
           size="small"
           loading={deleteMutation.isPending}
-          onClick={() => deleteMutation.mutate()}
+          onClick={() => deleteMutation.action({ id: product.id })}
         >
           Delete
         </LoadingButton>

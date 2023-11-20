@@ -1,7 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
 import { PartialProduct, Product, validateProduct } from "~/models/Product";
-import { productService } from "~/services/productService";
 import { ProductForm } from "./ProductForm";
 import {
   Alert,
@@ -13,6 +11,7 @@ import {
   Stack,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { useProductService } from "~/contexts/ProductServiceContext";
 
 interface Props {
   initialProduct: Product;
@@ -26,35 +25,23 @@ export const EditProducDialog: FC<Props> = ({
   close,
 }) => {
   const [product, setProduct] = useState<PartialProduct>(initialProduct);
+  const [validationError, setValidationError] = useState<string>();
+  const productService = useProductService();
+  const editMutation = productService.useProductUpdate();
 
-  const queryClient = useQueryClient();
+  const handleEdit = () => {
+    setValidationError(undefined);
+    const validated = validateProduct(product);
+    if (validated.type === "invalid") {
+      setValidationError(validated.msg);
+    } else {
+      editMutation
+        .action({ id: initialProduct.id, product: validated.data })
+        .then(close);
+    }
+  };
 
-  const mutation = useMutation({
-    mutationFn: (toValidate: PartialProduct) => {
-      const validated = validateProduct(toValidate);
-      if (validated.type === "invalid") {
-        return Promise.reject(validated.msg);
-      } else {
-        return productService
-          .update(initialProduct.id, validated.data)
-          .then(() => validated.data);
-      }
-    },
-    onSuccess: (editedProduct) => {
-      queryClient.setQueryData(["products"], (data: Product[]) =>
-        data.map((o) =>
-          o.id === initialProduct.id
-            ? { id: initialProduct.id, ...editedProduct }
-            : o
-        )
-      );
-      queryClient.setQueryData(["products", initialProduct.id], {
-        id: initialProduct.id,
-        ...editedProduct,
-      });
-      close();
-    },
-  });
+  const error = validationError ?? editMutation.error?.message;
 
   return (
     <Dialog open={open}>
@@ -62,19 +49,14 @@ export const EditProducDialog: FC<Props> = ({
       <DialogContent>
         <Stack spacing={2}>
           <ProductForm product={product} onChange={setProduct} />
-          {mutation.isError && (
-            <Alert color="error">{mutation.error.message}</Alert>
-          )}
+          {error && <Alert color="error">{error}</Alert>}
         </Stack>
       </DialogContent>
       <DialogActions>
-        <LoadingButton
-          loading={mutation.isPending}
-          onClick={() => mutation.mutate(product)}
-        >
+        <LoadingButton loading={editMutation.isPending} onClick={handleEdit}>
           Save
         </LoadingButton>
-        <Button color="error" onClick={close} disabled={mutation.isPending}>
+        <Button color="error" onClick={close} disabled={editMutation.isPending}>
           Cancel
         </Button>
       </DialogActions>

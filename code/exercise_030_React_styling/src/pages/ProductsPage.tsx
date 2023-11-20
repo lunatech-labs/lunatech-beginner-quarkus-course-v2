@@ -1,40 +1,16 @@
-import { Button, Container, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
-import { QueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { AddProductDialog } from "~/components/AddProductDialog";
-import { ProductCard } from "~/components/ProductCard";
-import { Product } from "~/models/Product";
-import { productService } from "~/services/productService";
-
-export const loader = (queryClient: QueryClient) => async () =>
-  queryClient.getQueryData(productsQuery.queryKey) ??
-  (await queryClient.fetchQuery(productsQuery));
-
-export const productsQuery = {
-  queryKey: ["products"],
-  queryFn: productService.getAll,
-};
+import { ProductList } from "~/components/ProductList";
+import { useProductService } from "~/contexts/ProductServiceContext";
 
 export const ProductsPage = () => {
-  const products = useSuspenseQuery<Product[]>(productsQuery);
-  const [addingProduct, setAddingProduct] = useState(false);
+  const productService = useProductService();
+  const products = productService.useProductList();
 
-  return (
-    <Container>
-      <Typography variant="h2">Product list</Typography>
-      <Grid container spacing={2}>
-        {products.data.map((product) => (
-          <Grid key={product.id}>
-            <ProductCard product={product} />
-          </Grid>
-        ))}
-      </Grid>
-      <Button onClick={() => setAddingProduct(true)}>Add a product</Button>
-      <AddProductDialog
-        open={addingProduct}
-        close={() => setAddingProduct(false)}
-      />
-    </Container>
-  );
+  switch (products.type) {
+    case "Pending":
+      return <>Loading ...</>;
+    case "Failure":
+      return <>Failed: {products.error.message}</>;
+    case "Success":
+      return <ProductList products={products.data} />;
+  }
 };

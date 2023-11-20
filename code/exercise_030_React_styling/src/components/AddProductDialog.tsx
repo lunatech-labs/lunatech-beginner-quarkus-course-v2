@@ -8,11 +8,10 @@ import {
   DialogTitle,
   Stack,
 } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
-import { PartialProduct, Product, validateProduct } from "~/models/Product";
-import { productService } from "~/services/productService";
+import { PartialProduct, validateProduct } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
+import { useProductService } from "~/contexts/ProductServiceContext";
 
 interface Props {
   open: boolean;
@@ -21,26 +20,21 @@ interface Props {
 
 export const AddProductDialog: FC<Props> = ({ open, close }) => {
   const [product, setProduct] = useState<PartialProduct>({});
+  const [validationError, setValidationError] = useState<string>();
+  const productService = useProductService();
+  const addProduct = productService.useProductCreate();
 
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: (product: PartialProduct) => {
-      const validated = validateProduct(product);
-      if (validated.type === "invalid") {
-        return Promise.reject(new Error(validated.msg));
-      } else {
-        return productService.add(validated.data);
-      }
-    },
-    onSuccess: (added) => {
-      queryClient.setQueryData<Product[]>(["products"], (data) => [
-        ...(data ?? []),
-        added,
-      ]);
-      queryClient.setQueryData(["products", added.id], added);
-      close();
-    },
-  });
+  const handleAdd = () => {
+    setValidationError(undefined);
+    const validated = validateProduct(product);
+    if (validated.type === "invalid") {
+      setValidationError(validated.msg);
+    } else {
+      addProduct.action(validated.data).then(close);
+    }
+  };
+
+  const error = validationError ?? addProduct.error?.message;
 
   return (
     <Dialog open={open}>
@@ -48,19 +42,14 @@ export const AddProductDialog: FC<Props> = ({ open, close }) => {
       <DialogContent>
         <Stack spacing={2}>
           <ProductForm product={product} onChange={setProduct} />
-          {mutation.isError && (
-            <Alert color="error">{mutation.error.message}</Alert>
-          )}
+          {error && <Alert color="error">{error}</Alert>}
         </Stack>
       </DialogContent>
       <DialogActions>
-        <LoadingButton
-          loading={mutation.isPending}
-          onClick={() => mutation.mutate(product)}
-        >
+        <LoadingButton loading={addProduct.isPending} onClick={handleAdd}>
           Add
         </LoadingButton>
-        <Button color="error" onClick={close} disabled={mutation.isPending}>
+        <Button color="error" onClick={close} disabled={addProduct.isFailure}>
           Cancel
         </Button>
       </DialogActions>
