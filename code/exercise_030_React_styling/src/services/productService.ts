@@ -1,5 +1,6 @@
 import { Product, ProductRequest } from "~/models/Product";
 import { AsyncAction, AsyncResult } from ".";
+import { Context, createContext, useContext } from "react";
 
 export interface ProductService {
   useProductGet: (id: number) => AsyncResult<Product>;
@@ -18,3 +19,9 @@ export const ProductApi = {
   update: product,
   delete: product,
 } as const;
+
+export const ProductServiceContext: Context<ProductService> = createContext(
+  {} as ProductService
+);
+
+export const useProductService = () => useContext(ProductServiceContext);

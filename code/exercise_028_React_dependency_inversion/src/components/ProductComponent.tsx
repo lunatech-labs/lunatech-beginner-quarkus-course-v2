@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { PartialProduct, Product, validateProduct } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
-import { useProductService } from "~/contexts/ProductServiceContext";
+import { useProductService } from "~/services/productService";
 
 interface Props {
   product: Product;

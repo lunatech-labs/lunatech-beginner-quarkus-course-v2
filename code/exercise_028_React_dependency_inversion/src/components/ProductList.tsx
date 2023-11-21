@@ -1,4 +1,4 @@
-import { useProductService } from "~/contexts/ProductServiceContext";
+import { useProductService } from "~/services/productService";
 import { AddProduct } from "./AddProduct";
 import { ProductComponent } from "./ProductComponent";
 

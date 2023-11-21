@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { ProductComponent } from "~/components/ProductComponent";
-import { useProductService } from "~/contexts/ProductServiceContext";
+import { useProductService } from "~/services/productService";
 
 export const ProductPage = () => {
   const params = useParams();

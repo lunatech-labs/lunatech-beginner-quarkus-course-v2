@@ -22,33 +22,35 @@ export type AsyncResult<T, E = Error> =
       error: E;
     };
 
+const defaultResult = {
+  isPending: false,
+  isSuccess: false,
+  isFailure: false,
+  error: undefined,
+} as const;
 export const AsyncResult = {
   pending: <T, E = Error>(): AsyncResult<T, E> => ({
     type: "Pending",
+    ...defaultResult,
     isPending: true,
-    isSuccess: false,
-    isFailure: false,
-    error: undefined,
   }),
   success: <T, E = Error>(data: T): AsyncResult<T, E> => ({
     type: "Success",
-    isPending: false,
+    ...defaultResult,
     isSuccess: true,
-    isFailure: false,
     data,
-    error: undefined,
   }),
   failure: <T, E>(error: E): AsyncResult<T, E> => ({
     type: "Failure",
-    isPending: false,
-    isSuccess: false,
+    ...defaultResult,
     isFailure: true,
     error,
   }),
 } as const;
 
+type Action<P, T> = (params: P) => Promise<T>;
 export type AsyncAction<P, T = void, E = Error> = {
-  action: (params: P) => Promise<T>;
+  action: Action<P, T>;
 } & (
   | {
       type: "Idle";
@@ -61,50 +63,32 @@ export type AsyncAction<P, T = void, E = Error> = {
   | (AsyncResult<T, E> & { isIdle: false })
 );
 
+const defaultAction = { ...defaultResult, isIdle: false } as const;
 export const AsyncAction = {
-  idle: <P, T, E>(action: (params: P) => Promise<T>): AsyncAction<P, T, E> => ({
+  idle: <P, T, E>(action: Action<P, T>): AsyncAction<P, T, E> => ({
     type: "Idle",
-    isPending: false,
-    isSuccess: false,
-    isFailure: false,
+    ...defaultAction,
     isIdle: true,
     action,
-    error: undefined,
   }),
-  pending: <P, T, E>(
-    action: (params: P) => Promise<T>
-  ): AsyncAction<P, T, E> => ({
+  pending: <P, T, E>(action: Action<P, T>): AsyncAction<P, T, E> => ({
     type: "Pending",
+    ...defaultAction,
     isPending: true,
-    isSuccess: false,
-    isFailure: false,
-    isIdle: false,
     action,
-    error: undefined,
   }),
-  success: <P, T, E>(
-    action: (params: P) => Promise<T>,
-    data: T
-  ): AsyncAction<P, T, E> => ({
+  success: <P, T, E>(action: Action<P, T>, data: T): AsyncAction<P, T, E> => ({
     type: "Success",
-    isPending: false,
+    ...defaultAction,
     isSuccess: true,
-    isFailure: false,
-    isIdle: false,
     data,
     action,
-    error: undefined,
   }),
-  failure: <P, T, E>(
-    action: (params: P) => Promise<T>,
-    error: E
-  ): AsyncAction<P, T, E> => ({
+  failure: <P, T, E>(action: Action<P, T>, error: E): AsyncAction<P, T, E> => ({
     type: "Failure",
-    isPending: false,
-    isSuccess: false,
+    ...defaultAction,
     isFailure: true,
-    isIdle: false,
     error,
     action,
   }),
-};
+} as const;

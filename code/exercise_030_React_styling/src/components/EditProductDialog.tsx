@@ -11,7 +11,7 @@ import {
   Stack,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useProductService } from "~/contexts/ProductServiceContext";
+import { useProductService } from "~/services/productService";
 
 interface Props {
   initialProduct: Product;

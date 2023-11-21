@@ -15,6 +15,7 @@ const remove =
     xs?.filter((o) => o.id !== id) ?? [];
 
 export const productService: ProductService = {
+  useProductGet: (id: number) => useFetch(ProductApi.get(id)),
   useProductList: () => useFetch(ProductApi.list),
   useProductCreate: () =>
     useAction((client) => ({
@@ -22,6 +23,7 @@ export const productService: ProductService = {
         fetchService.post(ProductApi.create, product).then((res) => res.json()),
       onSuccess: (data) => {
         client.setQueryData([ProductApi.list], add(data));
+        client.setQueryData([ProductApi.get(data.id)], data);
       },
     })),
   useProductUpdate: () =>
@@ -30,6 +32,7 @@ export const productService: ProductService = {
         fetchService.put(ProductApi.update(id), product).then(() => {}),
       onSuccess: (_, { id, product }) => {
         client.setQueryData([ProductApi.list], update({ id, ...product }));
+        client.setQueryData([ProductApi.get(id)], { id, ...product });
       },
     })),
   useProductDelete: () =>
@@ -38,6 +41,7 @@ export const productService: ProductService = {
         fetchService.delete(ProductApi.delete(id)).then(() => {}),
       onSuccess: (_, { id }) => {
         client.setQueryData([ProductApi.list], remove(id));
+        client.setQueryData([ProductApi.get(id)], undefined);
       },
     })),
 };

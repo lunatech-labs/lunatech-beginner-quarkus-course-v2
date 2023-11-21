@@ -11,7 +11,7 @@ import {
 import { FC, useState } from "react";
 import { PartialProduct, validateProduct } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
-import { useProductService } from "~/contexts/ProductServiceContext";
+import { useProductService } from "~/services/productService";
 
 interface Props {
   open: boolean;
@@ -49,7 +49,7 @@ export const AddProductDialog: FC<Props> = ({ open, close }) => {
         <LoadingButton loading={addProduct.isPending} onClick={handleAdd}>
           Add
         </LoadingButton>
-        <Button color="error" onClick={close} disabled={addProduct.isFailure}>
+        <Button color="error" onClick={close} disabled={addProduct.isPending}>
           Cancel
         </Button>
       </DialogActions>

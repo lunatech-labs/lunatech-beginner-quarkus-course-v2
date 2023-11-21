@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { PartialProduct, validateProduct } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
-import { useProductService } from "~/contexts/ProductServiceContext";
+import { useProductService } from "~/services/productService";
 
 export const AddProduct: FC = () => {
   const [product, setProduct] = useState<PartialProduct>({});

@@ -1,5 +1,5 @@
 import { ProductList } from "~/components/ProductList";
-import { useProductService } from "~/contexts/ProductServiceContext";
+import { useProductService } from "~/services/productService";
 
 export const ProductsPage = () => {
   const productService = useProductService();
