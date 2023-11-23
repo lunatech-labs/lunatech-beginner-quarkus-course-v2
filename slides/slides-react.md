@@ -602,8 +602,42 @@ There are several React routing libraries available:
 ### SSG
 
 --- 
-## Part IV - Built-in React Components and API
+## Part IV 
+### Built-in React Components and API
+
 ---
+
+Fragment
+`<Fragment>` `<>...</> `
+
+Profiler
+
+---
+
+### StrictMode
+
+---
+
+#### Exercise 
+`<StrictMode>`
+
+---
+
+lazy
+Suspense
+
+---
+
+### Exercise 
+`<Suspense> lazy() </Suspense>`
+
+---
+forwardRef
+memo
+startTransition
+
+---
+
 
 ### Portals
 
@@ -623,15 +657,10 @@ const Modal = (props) => {
 ```
 ---
 
-Fragment
-Profiler
-StrictMode
-lazy
-Suspense
-forwardRef
-memo
-startTransition
+
 <!-- TODO??: 
+--- 
+## Part V - ...
 ---
 ### Error Boundaries
 ---
