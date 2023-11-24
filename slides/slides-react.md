@@ -165,8 +165,8 @@ const Container = ({ children }) => <div>{children}</div>
 > `key` is a string or a number that uniquely identifies each items among others in that array. It helps React identify which item has been moved, added, or removed.
 
 ```jsx
-const TodoItems = ({todos}) => 
-  todos.map(({ id, text }) => <li key={id}>{text}</li>);
+const ProductList = ({products}) => 
+  products.map(({ id, name }) => <li key={id}>{name}</li>);
 ```
 
 --- 
@@ -365,7 +365,9 @@ vs
 
 #### [Un]Controlled components 
 
-// TODO fill
+A Controlled Component is one that takes its current value through props and notifies changes through callbacks like onChange. 
+
+A Uncontrolled Component is one that stores its own state internally, and you query the DOM using a ref to find its current value when you need it. This is a bit more like traditional HTML.
 
 ---
 
@@ -494,7 +496,7 @@ useEffect(() => {
 
 ### Performance Hooks - `useMemo`
 
-// TODO When to use...
+It helps optimize performance by caching the result of the operation and returning the cached result on subsequent renders if the dependencies have not changed.
 
 ```tsx
   const memoizedValue = useMemo(() => 
@@ -503,6 +505,7 @@ useEffect(() => {
 ```
 
 ---
+
 ### Performance Hooks - `useCallback`
 
 // TODO When to use...
@@ -530,10 +533,12 @@ useEffect(() => {
 ---
 
 ### Api calls
+
 > We saw how to fetch data in React using the `useState` and `useEffect` hooks or with our custom `useFetch` hook. We also saw how to manage our state using `useReducer`. 
 We will now use a library that handles all the tricky parts of fetching, synchronizing and updating server state.
 
 --- 
+
 #### Exercise
 
 `React query`
@@ -557,6 +562,7 @@ There are several React routing libraries available:
 ---
 
 ### Styling
+// TODO 
 
 > There are many ways to style a React application
 - CSS-in-CSS (e.g. CSS, Sass, CSS Modules, or CSS Modules with Sass)
@@ -594,7 +600,23 @@ There are several React routing libraries available:
 ### Testing
 #### Jest
 #### React testing library
+
+---
+
+#### Exercise
+
+`Unit tests`
+
+---
+
 #### Playwright
+
+---
+
+#### Exercise
+
+`End to end tests`
+
 ---
 ?
 ### Framework
@@ -603,19 +625,36 @@ There are several React routing libraries available:
 
 --- 
 ## Part IV 
-### Built-in React Components and API
+## Built-in React Components and API
 
 ---
 
-Fragment
-`<Fragment>` `<>...</> `
+### Fragment
 
-Profiler
+> `<Fragment>`, often used via `<>...</>` syntax, lets you group elements without a wrapper node.
+
+```tsx
+<>
+  <OneChild />
+  <AnotherChild />
+</>
+```
+
+--- 
+
+### Profiler
 
 ---
 
 ### StrictMode
 
+> Strict Mode is a tool in React for highlighting potential problems in an application. By wrapping a component tree with StrictMode, React will activate additional checks and warnings for its descendants.
+
+```tsx
+<StrictMode>
+  <App />
+</StrictMode>
+```
 ---
 
 #### Exercise 
@@ -623,21 +662,45 @@ Profiler
 
 ---
 
-lazy
-Suspense
+### lazy
+
+> `lazy` lets you defer loading component’s code until it is rendered for the first time.
+
+```tsx
+const ProductPage = lazy(() => import('~/pages/ProductPage.tsx'));
+```
+
+--- 
+
+### Suspense
+
+> Suspense is a component that lets you specify the fallback content to display while waiting for a component to load. 
+It is used in conjunction with:
+- Data fetching with Suspense-enabled frameworks like Relay and Next.js
+- Lazy-loading component code with `lazy`
+- Reading the value of a `Promise` with the `use` (🧪) hook
 
 ---
 
 ### Exercise 
-`<Suspense> lazy() </Suspense>`
-
----
-forwardRef
-memo
-startTransition
+`<Suspense> lazy </Suspense>`
 
 ---
 
+### forwardRef
+
+---
+
+### memo
+
+---
+
+### startTransition
+
+// TODO change
+> useTransition hook allows you to mark certain updates as transitions so they can be deprioritized, allowing other, more urgent updates to be processed first. This ensures that the UI remains responsive during updates that might take some time.
+
+---
 
 ### Portals
 
@@ -655,6 +718,7 @@ const Modal = (props) => {
   )
 }
 ```
+
 ---
 
 
