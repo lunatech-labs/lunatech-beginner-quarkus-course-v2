@@ -1,8 +1,9 @@
 ## Exercise - Rendering list
 
-Display a list of products.
+How to render a list of products in a React.
 
-
-1. Modify the `ProductList` component to iterate over the `products` array and render a `Product` component for each product.
-2. Ensure each `Product` component receives a unique `key` prop to help React efficiently update the list.
-
+- Create an array called `products` inside `ProductList`, containing the different products you rendered in the previous exercise.
+- Update the returned element to map over the `products` array.
+- For each product, render the `Product` component, passing the name and price as props.
+- Ensure to include a unique `key` prop for each rendered `Product`.
+  - Reminder: the key should be unique for each product

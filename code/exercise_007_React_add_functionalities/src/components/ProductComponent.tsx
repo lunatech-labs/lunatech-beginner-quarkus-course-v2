@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import {
   PartialProduct,
   ProductRequest,
-  validateProduct
+  validateProduct,
 } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
 

@@ -34,7 +34,7 @@ describe("ProductCard", () => {
 
   it("call deletes product when 'Delete' button is clicked", () => {
     const deleteMutationMock: AsyncAction<{ id: number }> = AsyncAction.idle(
-      vi.fn()
+      vi.fn(),
     );
 
     render(<ProductCard product={product} onClick={() => {}} />, {
@@ -50,7 +50,7 @@ describe("ProductCard", () => {
 
   it("cannot delete while deleting", () => {
     const deleteMutationMock: AsyncAction<{ id: number }> = AsyncAction.pending(
-      vi.fn()
+      vi.fn(),
     );
 
     render(<ProductCard product={product} onClick={() => {}} />, {

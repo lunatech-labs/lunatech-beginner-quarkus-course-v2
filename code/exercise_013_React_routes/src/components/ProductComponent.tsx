@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { PartialProduct, Product, validateProduct } from "~/models/Product";
 import { ProductForm } from "./ProductForm";
-import { useProductService } from "~/services/productService"
+import { useProductService } from "~/services/productService";
 
 interface Props {
   product: Product;
@@ -24,9 +24,10 @@ export const ProductComponent: FC<Props> = ({ product }) => {
     if (validated.type === "invalid") {
       setValidationError(validated.msg);
     } else {
-      editMutation
-        .action({ id: product.id, product: validated.data })
-        .then(() => setEditing({ type: "Viewing" }));
+      editMutation.action(
+        { id: product.id, product: validated.data },
+        { onSuccess: () => setEditing({ type: "Viewing" }) },
+      );
     }
   };
 

@@ -13,7 +13,7 @@ export const App = () => {
   const state = useFetch(productService.getAll);
 
   switch (state.type) {
-    case "Loading":
+    case "Pending":
       return <>Loading ...</>;
     case "Failure":
       return <>Failed {JSON.stringify(state.error)}</>;
@@ -31,7 +31,7 @@ const ProductProvider: FC<
 > = ({ initialProducts, children }) => {
   const [products, productReducer] = useReducer(
     ProductReducer,
-    initialProducts
+    initialProducts,
   );
   return (
     <ProductContext.Provider value={products}>

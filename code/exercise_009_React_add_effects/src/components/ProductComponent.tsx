@@ -15,7 +15,7 @@ type EditStatus =
 
 export const ProductComponent: FC<Props> = ({ product }) => {
   const [editing, setEditing] = useState<EditStatus>({ type: "Viewing" });
-  const [status, setStatus] = useState<AsyncResult<any, string>>();
+  const [status, setStatus] = useState<AsyncResult<object, string>>();
   const dispatch = useContext(ProductDispatchContext);
 
   const edit = (product: PartialProduct) =>

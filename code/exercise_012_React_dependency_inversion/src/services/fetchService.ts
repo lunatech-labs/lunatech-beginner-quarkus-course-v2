@@ -3,13 +3,13 @@ export const fetchService = {
     fetch(url, {
       headers: { "Content-Type": "application/json" },
     }),
-  post: (url: string, data: any) =>
+  post: <T>(url: string, data: T) =>
     fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }),
-  put: (url: string, data: any) =>
+  put: <T>(url: string, data: T) =>
     fetch(url, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

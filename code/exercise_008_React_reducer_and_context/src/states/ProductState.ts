@@ -13,7 +13,7 @@ const nextId = (function () {
 
 export const ProductReducer: Reducer<Product[], ProductAction> = (
   state,
-  action
+  action,
 ) => {
   switch (action.type) {
     case "Add":
@@ -22,7 +22,7 @@ export const ProductReducer: Reducer<Product[], ProductAction> = (
       return state.filter((o) => o.id !== action.id);
     case "Edit":
       return state.map((o) =>
-        o.id === action.id ? { id: action.id, ...action.product } : o
+        o.id === action.id ? { id: action.id, ...action.product } : o,
       );
   }
 };

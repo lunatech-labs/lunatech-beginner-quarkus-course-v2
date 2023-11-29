@@ -15,7 +15,7 @@ import { useProductService } from "~/services/productService";
 
 interface Props {
   product: Product;
-  onClick: () => void
+  onClick: () => void;
 }
 
 export const ProductCard: FC<Props> = ({ product, onClick }) => {

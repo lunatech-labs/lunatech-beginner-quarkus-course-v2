@@ -35,9 +35,10 @@ export const EditProducDialog: FC<Props> = ({
     if (validated.type === "invalid") {
       setValidationError(validated.msg);
     } else {
-      editMutation
-        .action({ id: initialProduct.id, product: validated.data })
-        .then(close);
+      editMutation.action(
+        { id: initialProduct.id, product: validated.data },
+        { onSuccess: close },
+      );
     }
   };
 

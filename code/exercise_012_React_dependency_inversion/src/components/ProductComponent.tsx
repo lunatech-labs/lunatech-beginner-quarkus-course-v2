@@ -24,9 +24,10 @@ export const ProductComponent: FC<Props> = ({ product }) => {
     if (validated.type === "invalid") {
       setValidationError(validated.msg);
     } else {
-      editMutation
-        .action({ id: product.id, product: validated.data })
-        .then(() => setEditing({ type: "Viewing" }));
+      editMutation.action(
+        { id: product.id, product: validated.data },
+        { onSuccess: () => setEditing({ type: "Viewing" }) },
+      );
     }
   };
 

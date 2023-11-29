@@ -22,7 +22,8 @@ export const AddProductDialog: FC<Props> = ({ open, close }) => {
   const productService = useProductService();
   const { action, isPending } = productService.useProductCreate();
 
-  const handleAdd = (product: ProductRequest) => action(product).then(close);
+  const handleAdd = (product: ProductRequest) =>
+    action(product, { onSuccess: close });
 
   return (
     <Dialog open={open}>

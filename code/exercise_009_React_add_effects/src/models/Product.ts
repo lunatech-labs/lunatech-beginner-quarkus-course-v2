@@ -8,9 +8,9 @@ export interface Product {
 export type ProductRequest = Omit<Product, "id">;
 export type PartialProduct = Partial<ProductRequest>;
 
-export const validateProduct: (p: PartialProduct) => Validate<ProductRequest> = (
-  p: PartialProduct
-) => {
+export const validateProduct: (
+  p: PartialProduct,
+) => Validate<ProductRequest> = (p) => {
   if (!p.name) {
     return { type: "invalid", msg: "Missing field `name`" };
   } else if (p.name.length <= 0) {

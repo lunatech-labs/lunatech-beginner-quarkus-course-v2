@@ -18,7 +18,7 @@ export const ProductComponent: FC<Props> = ({ product }) => {
           src={`https://fakeimg.pl/192x96/?text=${product.name}&font=lobster`}
           alt={product.name}
         />
-        <Stack >
+        <Stack>
           <Typography variant="h6">Price</Typography>
           <Typography>{product.price}€</Typography>
         </Stack>

@@ -30,7 +30,7 @@ test.describe("Adding Product", () => {
     await page.getByRole("button", { name: "Add" }).click();
 
     await expect(
-      page.getByRole("button", { name: "Name 12.44€" })
+      page.getByRole("button", { name: "Name 12.44€" }),
     ).toBeVisible();
   });
 

@@ -4,7 +4,8 @@ import { useAction } from "./useAction";
 import { fetchService } from "~/services/fetchService";
 
 const add =
-  <T>(x: T) => (xs?: T[]) => [...(xs ?? []), x];
+  <T>(x: T) =>
+  (xs?: T[]) => [...(xs ?? []), x];
 const update =
   <Id, T extends { id: Id }>(x: T) =>
   (xs?: T[]) =>

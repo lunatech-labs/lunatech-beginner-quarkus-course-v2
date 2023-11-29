@@ -7,31 +7,38 @@ import { AsyncResult } from "~/services";
 
 export const AddProduct: FC = () => {
   const [product, setProduct] = useState<PartialProduct>({});
+  const [validationError, setValidationError] = useState<string>();
   const [status, setStatus] = useState<AsyncResult<Product, string>>();
   const dispatch = useContext(ProductDispatchContext);
 
   const handleAdd = () => {
-    setStatus({ type: "Loading" });
     const validated = validateProduct(product);
     if (validated.type === "invalid") {
-      setStatus({ type: "Failure", error: validated.msg });
+      setValidationError(validated.msg);
     } else {
-      productService.add(validated.data).then((product) => {
-        setStatus({ type: "Success", data: product });
-        dispatch({ type: "Add", products: [product] });
-      }).catch(() => 
-        setStatus({ type: "Failure", error: "Error while submiting" })
-      );
+      setValidationError(undefined);
+      setStatus(AsyncResult.pending());
+      productService
+        .add(validated.data)
+        .then((product) => {
+          setStatus(AsyncResult.success(product));
+          dispatch({ type: "Add", product });
+        })
+        .catch(() => {
+          setStatus(AsyncResult.failure("Error while submiting"));
+        });
     }
   };
 
+  const error = validationError ?? status?.error;
+
   return (
     <div>
-      <button onClick={handleAdd} disabled={status?.type === "Loading"}>
+      <button onClick={handleAdd} disabled={status?.isPending}>
         ✅
       </button>
       <ProductForm product={product} onChange={setProduct} />
-      {status?.type === "Failure" && <div>{status.error}</div>}
+      {error && <div>{error}</div>}
     </div>
   );
 };

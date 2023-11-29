@@ -10,18 +10,18 @@ import { AsyncResult } from "~/services";
 import { Product } from "~/models/Product";
 
 export const App = () => {
-  const [state, setState] = useState<AsyncResult<Product[]>>({
-    type: "Loading",
-  });
+  const [state, setState] = useState<AsyncResult<Product[]>>(
+    AsyncResult.pending(),
+  );
   useEffect(() => {
     productService
       .getAll()
-      .then((data) => setState({ type: "Success", data }))
-      .catch((error) => setState({ type: "Failure", error }));
+      .then((data) => setState(AsyncResult.success(data)))
+      .catch((error) => setState(AsyncResult.failure(error)));
   }, [setState]);
 
   switch (state.type) {
-    case "Loading":
+    case "Pending":
       return <>Loading ...</>;
     case "Failure":
       return <>Failed {JSON.stringify(state.error)}</>;
@@ -39,7 +39,7 @@ const ProductProvider: FC<
 > = ({ initialProducts, children }) => {
   const [products, productReducer] = useReducer(
     ProductReducer,
-    initialProducts
+    initialProducts,
   );
   return (
     <ProductContext.Provider value={products}>

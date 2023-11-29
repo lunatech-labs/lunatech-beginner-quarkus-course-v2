@@ -21,7 +21,7 @@ export const ProductApi = {
 } as const;
 
 export const ProductServiceContext: Context<ProductService> = createContext(
-  {} as ProductService
+  {} as ProductService,
 );
 
 export const useProductService = () => useContext(ProductServiceContext);

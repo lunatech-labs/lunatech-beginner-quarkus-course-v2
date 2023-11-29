@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProductList } from "~/components/ProductList";
-import { ProductServiceContext } from "~/services/productService"
+import { ProductServiceContext } from "~/services/productService";
 import { productService } from "./hooks/ProductServiceReactQuery";
 
 const queryClient = new QueryClient();

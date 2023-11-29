@@ -11,14 +11,14 @@ interface Props {
 }
 export const AddProduct: FC<Props> = ({ onAdd }) => {
   const [product, setProduct] = useState<PartialProduct>({});
-  const [error, setError] = useState<string>();
+  const [validationError, setValidationError] = useState<string>();
 
   const handleAdd = () => {
     const validated = validateProduct(product);
     if (validated.type === "invalid") {
-      setError(validated.msg);
+      setValidationError(validated.msg);
     } else {
-      setError(undefined);
+      setValidationError(undefined);
       onAdd(validated.data);
     }
   };
@@ -27,7 +27,7 @@ export const AddProduct: FC<Props> = ({ onAdd }) => {
     <div>
       <button onClick={handleAdd}>✅</button>
       <ProductForm product={product} onChange={setProduct} />
-      {error && <div>{error}</div>}
+      {validationError && <div>{validationError}</div>}
     </div>
   );
 };

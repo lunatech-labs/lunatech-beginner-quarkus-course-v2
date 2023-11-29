@@ -27,7 +27,7 @@ export const ProductList = () => {
           removeItem={() => setProducts(products.filter((p) => p.id !== id))}
           updateProduct={(updated) =>
             setProducts(
-              products.map((p) => (p.id === id ? { id, ...updated } : p))
+              products.map((p) => (p.id === id ? { id, ...updated } : p)),
             )
           }
         />

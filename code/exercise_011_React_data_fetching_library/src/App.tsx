@@ -1,7 +1,4 @@
-import {
-  QueryClient,
-  QueryClientProvider
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProductList } from "~/components/ProductList";
 
 const queryClient = new QueryClient();

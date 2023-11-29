@@ -15,14 +15,13 @@ import {
 const dummyProductService: ProductService = {
   useProductGet: () => AsyncResult.pending(),
   useProductList: () => AsyncResult.pending(),
-  useProductCreate: () => AsyncAction.idle(() => Promise.reject()),
-  useProductUpdate: () => AsyncAction.idle(() => Promise.reject()),
-  useProductDelete: () => AsyncAction.idle(() => Promise.reject()),
+  useProductCreate: () => AsyncAction.idle(() => {}),
+  useProductUpdate: () => AsyncAction.idle(() => {}),
+  useProductDelete: () => AsyncAction.idle(() => {}),
 };
 
-const ProvidersWrapper =
-  (productService?: Partial<ProductService>): FC<PropsWithChildren> =>
-  ({ children }) => {
+const ProvidersWrapper = (productService?: Partial<ProductService>) =>
+  function Wrapper({ children }: PropsWithChildren) {
     return (
       <ProductServiceContext.Provider
         value={{ ...dummyProductService, ...productService }}
@@ -50,7 +49,7 @@ function customRender(
   ui: React.ReactElement,
   options?: Omit<RenderOptions, "queries"> & {
     productService?: Partial<ProductService>;
-  }
+  },
 ) {
   return render(ui, {
     wrapper: ProvidersWrapper(options?.productService),
@@ -59,7 +58,7 @@ function customRender(
 }
 function customRenderHook<Props, Result>(
   render: (initialProps: Props) => Result,
-  options?: RenderHookOptions<Props>
+  options?: RenderHookOptions<Props>,
 ) {
   return renderHook(render, {
     wrapper: ProvidersHookWrapper,

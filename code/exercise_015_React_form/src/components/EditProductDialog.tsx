@@ -28,7 +28,7 @@ export const EditProducDialog: FC<Props> = ({
   const { action, isPending } = productService.useProductUpdate();
 
   const handleEdit = (product: ProductRequest) =>
-    action({ id: initialProduct.id, product }).then(close);
+    action({ id: initialProduct.id, product }, { onSuccess: close });
 
   return (
     <Dialog open={open}>

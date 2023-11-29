@@ -9,7 +9,7 @@ export type ProductRequest = Omit<Product, "id">;
 export type PartialProduct = Partial<ProductRequest>;
 
 export const validateProduct: (
-  p: PartialProduct
+  p: PartialProduct,
 ) => Validate<ProductRequest> = (p: PartialProduct) => {
   if (!p.name) {
     return { type: "invalid", msg: "Missing field `name`" };

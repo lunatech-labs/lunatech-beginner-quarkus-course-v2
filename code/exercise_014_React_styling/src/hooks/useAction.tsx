@@ -9,8 +9,8 @@ import { toAsyncAction } from "./reactQueryUtils";
 
 export function useAction<TData, TError, TVariables, TContext>(
   options: (
-    client: QueryClient
-  ) => UseMutationOptions<TData, TError, TVariables, TContext>
+    client: QueryClient,
+  ) => UseMutationOptions<TData, TError, TVariables, TContext>,
 ): AsyncAction<TVariables, TData, TError> {
   const queryClient = useQueryClient();
   const result = useMutation(options(queryClient), queryClient);

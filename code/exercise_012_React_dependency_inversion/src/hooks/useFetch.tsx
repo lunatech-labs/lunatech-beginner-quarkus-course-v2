@@ -1,14 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { AsyncResult } from "~/services";
 import { toAsyncResult } from "./reactQueryUtils";
+import { fetchService } from "~/services/fetchService";
 
 export function useFetch<T>(url: string): AsyncResult<T> {
   const result = useQuery({
     queryKey: [url],
-    queryFn: () =>
-      fetch(url, {
-        headers: { "Content-Type": "application/json" },
-      }).then((res) => res.json()),
+    queryFn: () => fetchService.get(url).then((res) => res.json()),
   });
 
   return toAsyncResult(result);

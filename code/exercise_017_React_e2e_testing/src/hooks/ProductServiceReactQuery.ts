@@ -2,11 +2,11 @@ import { ProductApi, ProductService } from "~/services/productService";
 import { useFetch } from "./useFetch";
 import { useAction } from "./useAction";
 import { fetchService } from "~/services/fetchService";
+import { Product } from "~/models/Product";
 
 const add =
   <T>(x: T) =>
-  (xs?: T[]) =>
-    [...(xs ?? []), x];
+  (xs?: T[]) => [...(xs ?? []), x];
 const update =
   <Id, T extends { id: Id }>(x: T) =>
   (xs?: T[]) =>
@@ -22,7 +22,9 @@ export const productService: ProductService = {
   useProductCreate: () =>
     useAction((client) => ({
       mutationFn: (product) =>
-        fetchService.post(ProductApi.create, product).then((res) => res.json()),
+        fetchService
+          .post(ProductApi.create, product)
+          .then<Product>((res) => res.json()),
       onSuccess: (data) => {
         client.setQueryData([ProductApi.list], add(data));
         client.setQueryData([ProductApi.get(data.id)], data);

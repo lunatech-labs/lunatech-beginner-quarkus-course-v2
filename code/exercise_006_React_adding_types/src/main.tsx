@@ -12,7 +12,9 @@ const Product: FC<Props> = ({ name, price, removeItem }) => {
   return (
     <div>
       <button onClick={removeItem}>❌</button>
-      <span>{name} - {price}</span>
+      <span>
+        {name} - {price}
+      </span>
     </div>
   );
 };

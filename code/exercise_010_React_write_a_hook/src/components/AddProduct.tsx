@@ -22,15 +22,13 @@ export const AddProduct: FC = () => {
         .add(validated.data)
         .then((product) => {
           setStatus(AsyncResult.success(product));
-          dispatch({ type: "Add", products: [product] });
+          dispatch({ type: "Add", product: product });
         })
-        .catch(() =>
-          setStatus(AsyncResult.failure("Error while submiting"))
-        );
+        .catch(() => setStatus(AsyncResult.failure("Error while submiting")));
     }
   };
 
-  const error = validationError ?? status?.error
+  const error = validationError ?? status?.error;
   return (
     <div>
       <button onClick={handleAdd} disabled={status?.type === "Pending"}>

@@ -1,17 +1,24 @@
-## Exercise - React query
+## Exercise - Dependency inversion
 
-### Setup
+When using `useEffect` and our custom hook `useFetch` we had were depent
 
-We choose to use [React Query](https://tanstack.com/query) for this exercise:
+### ProductService
 
-```bash
-npm install @tanstack/react-query
-```
+We are providing the interface for the `ProductService` in `services/productService.ts`.
 
-### Adding queries
+### ProductServiceReactQuery
 
-1. Remove `useFetch` and replace it with [`useQuery`](https://tanstack.com/query/latest/docs/react/guides/queries)
+Write an implementation `ProductService` using `reactQuery`.
 
-### Adding mutation
+- Create a file `services/productServiceReactQuery.ts`
+- Implement `useProductList` using `useQuery`
+  - we provided some utils in `utils/reactQueryUtils` to transform reactQuery types to our defined types.
+  - you can also find a `service/fetchService` that contains the some method for `fetch`.
+- Implement the rest using `useMutation`.
+  - Take care updating data on mutation success.
 
-1. In `ProductComponent` and `AddProduct` use the hook [`useQuery`](https://tanstack.com/query/latest/docs/react/guides/mutations) to handle *Creation*, *Addition* and *Deletion*
+### Passing the service in the context
+
+- In `App` component you can inject the created service using `ProductServiceContext`
+- In the different `Product*` components remove reference to `reactQuery`.
+  - Get a `productService` using the `useProductService` hook.

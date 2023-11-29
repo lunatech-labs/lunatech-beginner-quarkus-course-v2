@@ -24,7 +24,7 @@ export const ProductComponent: FC<Props> = ({ product }) => {
     mutationFn: () => productService.remove(product.id),
     onSuccess: () => {
       queryClient.setQueryData(["products"], (data: Product[]) =>
-        data.filter(({ id }) => id !== product.id)
+        data.filter(({ id }) => id !== product.id),
       );
     },
   });
@@ -35,8 +35,8 @@ export const ProductComponent: FC<Props> = ({ product }) => {
     onSuccess: (editedProduct) => {
       queryClient.setQueryData(["products"], (data: Product[]) =>
         data.map((o) =>
-          o.id === product.id ? { id: product.id, ...editedProduct } : o
-        )
+          o.id === product.id ? { id: product.id, ...editedProduct } : o,
+        ),
       );
     },
   });
@@ -46,9 +46,9 @@ export const ProductComponent: FC<Props> = ({ product }) => {
     if (validated.type === "invalid") {
       setEditing({ type: "Editing", product, error: validated.msg });
     } else {
-      editMutation
-        .mutateAsync(validated.data)
-        .then(() => setEditing({ type: "Viewing" }));
+      editMutation.mutate(validated.data, {
+        onSuccess: () => setEditing({ type: "Viewing" }),
+      });
     }
   };
 

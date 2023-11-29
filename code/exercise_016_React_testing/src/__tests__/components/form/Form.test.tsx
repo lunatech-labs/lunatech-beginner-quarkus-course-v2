@@ -6,14 +6,14 @@ import { z } from "zod";
 
 describe("Form", () => {
   const submit = () => fireEvent.click(screen.getByRole("button"));
-  const getByLabel = (label: string) =>
-    screen.getByLabelText(label) as HTMLInputElement;
+  const getByLabel = (label: string): HTMLInputElement =>
+    screen.getByLabelText(label);
 
   it("renders input field with correct attributes", () => {
     render(
       <Form onSubmit={vi.fn}>
         <Input name="test" label="Test Input" />
-      </Form>
+      </Form>,
     );
 
     const inputElement = getByLabel("Test Input");
@@ -30,7 +30,7 @@ describe("Form", () => {
       >
         <Input name="test" label="Test Input" />
         <button type="submit" />
-      </Form>
+      </Form>,
     );
 
     const inputElement = getByLabel("Test Input");
@@ -48,7 +48,7 @@ describe("Form", () => {
       <Form onSubmit={handleSubmit}>
         <Input name="test" label="Test Input" />
         <button type="submit" />
-      </Form>
+      </Form>,
     );
 
     const inputElement = getByLabel("Test Input");
@@ -61,16 +61,16 @@ describe("Form", () => {
     expect(inputElement).toHaveAttribute("value", "Test value");
 
     await waitFor(() =>
-      expect(handleSubmit).toHaveBeenCalledWith({ test: "Test value" })
+      expect(handleSubmit).toHaveBeenCalledWith({ test: "Test value" }),
     );
   });
 
-  it("renders input field with default values", async () => {
+  it("renders input field with default values", () => {
     render(
-      <Form onSubmit={vi.fn()} defaultValue={{ test: "Default value"}}>
+      <Form onSubmit={vi.fn()} defaultValue={{ test: "Default value" }}>
         <Input name="test" label="Test Input" />
         <button type="submit" />
-      </Form>
+      </Form>,
     );
 
     const inputElement = getByLabel("Test Input");

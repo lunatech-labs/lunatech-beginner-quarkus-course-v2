@@ -30,7 +30,7 @@ export const AddProductDialog: FC<Props> = ({ open, close }) => {
     if (validated.type === "invalid") {
       setValidationError(validated.msg);
     } else {
-      addProduct.action(validated.data).then(close);
+      addProduct.action(validated.data, { onSuccess: close });
     }
   };
 

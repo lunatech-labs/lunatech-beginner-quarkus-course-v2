@@ -1,8 +1,12 @@
-import { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
-import { AsyncAction, AsyncResult } from "~/services";
+import {
+  MutateOptions,
+  UseMutationResult,
+  UseQueryResult,
+} from "@tanstack/react-query";
+import { Action, ActionOption, AsyncAction, AsyncResult } from "~/services";
 
 export const toAsyncResult = <TData, TError>(
-  res: UseQueryResult<TData, TError>
+  res: UseQueryResult<TData, TError>,
 ): AsyncResult<TData, TError> => {
   switch (res.status) {
     case "pending":
@@ -14,17 +18,32 @@ export const toAsyncResult = <TData, TError>(
   }
 };
 
+const toMutateOptions = <TData, TError, TVariables, TContext>({
+  onSuccess,
+  onFailure,
+}: ActionOption<TData, TVariables, TError>): MutateOptions<
+  TData,
+  TError,
+  TVariables,
+  TContext
+> => ({
+  onSuccess: onSuccess && ((data, variables) => onSuccess(data, variables)),
+  onError: onFailure && ((error, variables) => onFailure(error, variables)),
+});
 export const toAsyncAction = <TData, TError, TVariables, TContext>(
-  res: UseMutationResult<TData, TError, TVariables, TContext>
+  res: UseMutationResult<TData, TError, TVariables, TContext>,
 ): AsyncAction<TVariables, TData, TError> => {
+  const action: Action<TVariables, TData, TError> = (v, opt) =>
+    res.mutate(v, opt && toMutateOptions(opt));
+
   switch (res.status) {
     case "idle":
-      return AsyncAction.idle(res.mutateAsync);
+      return AsyncAction.idle(action);
     case "pending":
-      return AsyncAction.pending(res.mutateAsync);
+      return AsyncAction.pending(action);
     case "success":
-      return AsyncAction.success(res.mutateAsync, res.data);
+      return AsyncAction.success(action, res.data);
     case "error":
-      return AsyncAction.failure(res.mutateAsync, res.error);
+      return AsyncAction.failure(action, res.error);
   }
 };

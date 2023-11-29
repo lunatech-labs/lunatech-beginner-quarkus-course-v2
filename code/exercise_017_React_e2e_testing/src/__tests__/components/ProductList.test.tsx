@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "../test-utils";
+import { fireEvent, render, screen } from "../test-utils";
 import { ProductList } from "~/components/ProductList";
 
 describe("ProductComponent", () => {
@@ -40,16 +40,16 @@ describe("ProductComponent", () => {
     expect(screen.getByText("Add a product")).toBeInTheDocument();
   });
 
-  it("handles the state correctly when a product is added", async () => {
+  it("handles the state correctly when a product is added", () => {
     const { rerender } = render(
-      <ProductList products={products} onClick={() => {}} />
+      <ProductList products={products} onClick={() => {}} />,
     );
 
     rerender(
       <ProductList
         products={[...products, { id: 3, name: "New Product", price: 29.99 }]}
         onClick={() => {}}
-      />
+      />,
     );
 
     expect(screen.getByText("New Product")).toBeInTheDocument();
