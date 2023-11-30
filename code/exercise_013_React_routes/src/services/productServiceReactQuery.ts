@@ -1,6 +1,6 @@
 import { ProductApi, ProductService } from "~/services/productService";
-import { useFetch } from "./useFetch";
-import { useAction } from "./useAction";
+import { useFetch } from "~/hooks/useFetch";
+import { useAction } from "~/hooks/useAction";
 import { fetchService } from "~/services/fetchService";
 import { Product } from "~/models/Product";
 

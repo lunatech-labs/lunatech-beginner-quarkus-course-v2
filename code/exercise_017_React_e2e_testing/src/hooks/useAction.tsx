@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { AsyncAction } from "~/services";
-import { toAsyncAction } from "./reactQueryUtils";
+import { toAsyncAction } from "~/utils/reactQueryUtils";
 
 export function useAction<TData, TError, TVariables, TContext>(
   options: (

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AsyncResult } from "~/services";
-import { toAsyncResult } from "./reactQueryUtils";
+import { toAsyncResult } from "~/utils/reactQueryUtils";
 import { fetchService } from "~/services/fetchService";
 
 export function useFetch<T>(url: string): AsyncResult<T> {

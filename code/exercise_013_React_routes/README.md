@@ -18,3 +18,4 @@ npm install react-router-dom
 - Move loading logic from `ProductList` to `ProductsPage`
 - For `ProductPage` you need to complete the new `ProductService` method `useProductGet`
   - Reminder: Don't forget to update mutations to update the `reactQuery` data.
+- Create a hook `useRouter` that uses `useNavigate` and return a function `(path: string) => void`.
