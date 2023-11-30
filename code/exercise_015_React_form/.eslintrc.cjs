@@ -16,6 +16,14 @@ module.exports = {
     project: ["./tsconfig.json", "./tsconfig.node.json"],
     tsconfigRootDir: __dirname,
   },
+  rules: {
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: { attributes: false },
+      },
+    ],
+  },
   settings: {
     react: { version: "18.2" },
   },

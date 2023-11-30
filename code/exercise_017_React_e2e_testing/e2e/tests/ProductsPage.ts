@@ -21,7 +21,7 @@ export class ProductsPage {
     await this.cancelButton.click();
   }
 
-  async addProduct({ name, price }) {
+  async addProduct({ name, price }: { name: string; price: string }) {
     await this.openAddProductDialog();
     await this.page.getByLabel("Name").fill(name);
     await this.page.getByLabel("Price").fill(price);
@@ -29,7 +29,7 @@ export class ProductsPage {
   }
 
   async removeAll() {
-    for (const _ in await this.deleteButtons.all())
+    for (const _ of await this.deleteButtons.all())
       await this.deleteButtons.first().click();
   }
 }

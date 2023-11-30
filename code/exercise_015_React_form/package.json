@@ -15,8 +15,8 @@
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.2",
     "@mui/lab": "^5.0.0-alpha.153",
-    "@mui/material": "^5.14.18",
-    "@tanstack/react-query": "^5.9.0",
+    "@mui/material": "^5.14.19",
+    "@tanstack/react-query": "^5.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
@@ -24,8 +24,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/react": "^18.2.29",
+    "@types/node": "^20.10.1",
+    "@types/react": "^18.2.39",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
