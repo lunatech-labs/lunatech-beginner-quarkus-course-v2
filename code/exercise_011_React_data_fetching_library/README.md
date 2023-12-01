@@ -22,6 +22,7 @@ React query while manage the asynchronous state.
   );
   ```
 - In `ProductList` fetch the products using the hook [`useQuery`](https://tanstack.com/query/latest/docs/react/guides/queries)
+- // Todo abort
 
 ### Adding mutation
 

@@ -388,7 +388,7 @@ const fullName = firstName + " " + lastName;
 
 ---
 
-#### [Un]Controlled components
+##### [Un]Controlled components
 
 > A Controlled Component is one that takes its current value through props and notifies changes through callbacks like onChange.
 
@@ -527,7 +527,7 @@ useEffect(
 
 ---
 
-### Performance Hooks - `useMemo`
+##### Performance Hooks - `useMemo`
 
 It helps optimize performance by caching the result of the operation and returning the cached result on subsequent renders if the dependencies have not changed.
 
@@ -539,7 +539,7 @@ It helps optimize performance by caching the result of the operation and returni
 
 ---
 
-### Performance Hooks - `useCallback`
+##### Performance Hooks - `useCallback`
 
 > `useCallback` should only be used for performance optimization, when passing callbacks to child components or when dealing with expensive or frequently re-rendered callbacks.
 
@@ -674,7 +674,7 @@ It helps optimize performance by caching the result of the operation and returni
 
 ---
 
-#### E2E
+### E2E
 
 - Mimics user interactions with the application.
 - Validates the entire application flow.
@@ -754,7 +754,7 @@ const ProductPage = lazy(() => import("~/pages/ProductPage.tsx"));
 
 ---
 
-### Exercise
+#### Exercise
 
 `<Suspense> lazy </Suspense>`
 
@@ -814,10 +814,21 @@ const Modal = (props) => {
 }
 ```
 
-<!-- TODO??:
----
+<!-- TODO?:
 
 ## Part V - ...
+
+---
+
+### The use Hook
+
+---
+
+### Directives 'use server' 'use client'
+
+---
+
+### useFormState
 
 ---
 

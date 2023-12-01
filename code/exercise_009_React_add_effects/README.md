@@ -16,6 +16,8 @@ We also added a type representing an async result `AsyncResult<T, Error>`, we wi
 - Using `useEffect` and the `productService`, get the list of products and update it in the state.
 - Render correctly the different status of the state: `Pending`, `Failure` and `Success`.
 
+// Todo cleaning effect: abort
+
 #### Update products
 
 - In `ProductComponent` and `AddProduct` add also a state `useState<AsyncResult<Product[]>>` this time unitialized.

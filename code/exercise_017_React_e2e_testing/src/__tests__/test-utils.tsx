@@ -31,15 +31,14 @@ const ProvidersWrapper = (productService?: Partial<ProductService>) =>
     );
   };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
-
 const ProvidersHookWrapper: FC<PropsWithChildren> = ({ children }) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
