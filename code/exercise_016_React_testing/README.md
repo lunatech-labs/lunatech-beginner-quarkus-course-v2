@@ -31,7 +31,7 @@ npm install --save-dev vitest happy-dom @testing-library/react @testing-library/
 ### Testing hooks
 
 - Update `test-utils.tsx` to export a custom `renderHook` function.
-- /// TODO
+- Add tests on `ProductService`.
 
 ### Additional Testing Scenarios
 
