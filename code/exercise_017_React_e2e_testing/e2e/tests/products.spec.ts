@@ -1,16 +1,12 @@
-import { test as baseTest, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { ProductsPage } from "./ProductsPage";
+import { test as baseTest } from "./fixture";
 
 const test = baseTest.extend<{ productsPage: ProductsPage }>({
-  productsPage: async ({ page }, use) => {
-    // Set up the fixture.
-    const productsPage = new ProductsPage(page);
-
-    // Use the fixture value in the test.
+  productsPage: async ({ page, context }, use, testInfo) => {
+    const productsPage = new ProductsPage(page, context, testInfo);
     await use(productsPage);
-
-    // Clean up the fixture.
-    await productsPage.removeAll();
+    await productsPage.clean();
   },
 });
 
@@ -29,9 +25,9 @@ test.describe("Adding Product", () => {
 
     await page.getByRole("button", { name: "Add" }).click();
 
-    await expect(
-      page.getByRole("button", { name: "Name 12.44€" }),
-    ).toBeVisible();
+    const productCard = productsPage.product({ name: "Name" });
+    await expect(productCard).toBeVisible();
+    await productCard.getByRole("button", { name: "Delete" }).click();
   });
 
   test("should close the dialog when a product is added", async ({
@@ -46,6 +42,8 @@ test.describe("Adding Product", () => {
     await page.getByRole("button", { name: "Add" }).click();
 
     await expect(page.getByText("Add a product")).not.toBeVisible();
+    const productCard = productsPage.product({ name: "Name" });
+    await productCard.getByRole("button", { name: "Delete" }).click();
   });
 
   test("should close the dialog on cancel", async ({ productsPage, page }) => {
@@ -61,29 +59,48 @@ test.describe("Adding Product", () => {
 test.describe("Deleting Product", () => {
   test("should allow me to delete a product", async ({
     productsPage,
-    page,
+    constants,
   }) => {
-    await productsPage.addProduct({ name: "Name", price: "12.44" });
-    const deleteButton = page.getByRole("button", { name: "Delete" });
-    await deleteButton.click();
-    await expect(deleteButton).not.toBeInViewport();
+    await productsPage.addProduct(constants.product);
+    await productsPage.deleteProduct(constants.product);
+    await expect(productsPage.product(constants.product)).not.toBeInViewport();
   });
 });
 
 test.describe("Editing Product", () => {
-  test("should open edit dialog", async ({ productsPage, page }) => {
-    await productsPage.addProduct({ name: "Name", price: "12.44" });
-    const editButton = page.getByRole("button", { name: "Edit" });
-    await editButton.click();
+  test("should open edit dialog", async ({ productsPage, page, constants }) => {
+    await productsPage.addProduct(constants.product);
+    await productsPage.openEditProductDialog(constants.product);
     await expect(page.getByText("Update product")).toBeVisible();
   });
-  test("should close edit dialog on cancel", async ({ productsPage, page }) => {
-    await productsPage.addProduct({ name: "Name", price: "12.44" });
-    const editButton = page.getByRole("button", { name: "Edit" });
-    await editButton.click();
+
+  test("should edit product info", async ({
+    productsPage,
+    page,
+    constants,
+  }) => {
+    await productsPage.addProduct(constants.product);
+    await productsPage.openEditProductDialog(constants.product);
+
+    await page.getByLabel("Name").fill("EditedProduct");
+    await page.getByLabel("Price").fill("0.99");
+
+    await page.getByRole("button", { name: "Save" }).click();
+
+    await expect(
+      page.getByRole("button", { name: "EditedProduct 0.99€" }),
+    ).toBeVisible();
+  });
+
+  test("should close edit dialog on cancel", async ({
+    productsPage,
+    page,
+    constants,
+  }) => {
+    await productsPage.addProduct(constants.product);
+    await productsPage.openEditProductDialog(constants.product);
     await expect(page.getByText("Update product")).toBeVisible();
-    const cancelButton = page.getByRole("button", { name: "Cancel" });
-    await cancelButton.click();
+    await productsPage.cancel();
     await expect(page.getByText("Update product")).not.toBeVisible();
   });
 });

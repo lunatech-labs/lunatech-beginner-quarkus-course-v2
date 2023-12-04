@@ -55,20 +55,6 @@ class:
 
 ---
 
-#### Class Components **_@deprecated_**
-
-A class that extends `React.Component` and implements a render method
-
-```tsx
-class HelloWorld extends React.Component {
-  render() {
-    return <div>Hello World!</div>;
-  }
-}
-```
-
----
-
 #### Functional Components
 
 A javascript function that return a React element
@@ -402,7 +388,7 @@ const fullName = firstName + " " + lastName;
 
 ---
 
-## Part II - ??? // TODO find name
+## Part II - Thinking in React
 
 ---
 
@@ -582,6 +568,12 @@ It helps optimize performance by caching the result of the operation and returni
 
 ---
 
+#### Exercise
+
+`Dependency`
+
+---
+
 ### Router
 
 > Routes are a way to organize your React application into different pages.
@@ -671,21 +663,6 @@ It helps optimize performance by caching the result of the operation and returni
 #### Exercise
 
 `Unit tests`
-
----
-
-### E2E
-
-- Mimics user interactions with the application.
-- Validates the entire application flow.
-- Ensures compatibility across different browsers.
-- Visual Regression Testing.
-
----
-
-#### Exercise
-
-`End to end tests`
 
 ---
 
@@ -813,31 +790,3 @@ const Modal = (props) => {
   )
 }
 ```
-
-<!-- TODO?:
-
-## Part V - ...
-
----
-
-### The use Hook
-
----
-
-### Directives 'use server' 'use client'
-
----
-
-### useFormState
-
----
-
-### Error Boundaries
-
----
-
-### Render Props
-
-### Higher Order Components
-
--->

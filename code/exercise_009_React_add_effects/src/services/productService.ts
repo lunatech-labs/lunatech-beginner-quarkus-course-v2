@@ -1,7 +1,7 @@
 import { Product, ProductRequest } from "~/models/Product";
 
-function getAll(): Promise<Product[]> {
-  return fetch("/api/products").then<Product[]>((res) => res.json());
+function getAll(options?: Pick<RequestInit, "signal">): Promise<Product[]> {
+  return fetch("/api/products", options).then<Product[]>((res) => res.json());
 }
 
 function add(product: ProductRequest): Promise<Product> {

@@ -10,7 +10,7 @@ import {
 import { useFetch } from "./hooks/useFetch";
 
 export const App = () => {
-  const state = useFetch(productService.getAll);
+  const state = useFetch((signal) => productService.getAll({ signal }));
 
   switch (state.type) {
     case "Pending":

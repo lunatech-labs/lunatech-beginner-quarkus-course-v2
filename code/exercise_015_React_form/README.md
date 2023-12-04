@@ -6,7 +6,6 @@ We choose to use [React hook form](https://react-hook-form.com/) and [zod](https
 
 ```bash
 npm install react-hook-form zod @hookform/resolvers
-
 ```
 
 ### Differents Forms
@@ -106,6 +105,7 @@ We change our hand made validation to a zod validation:
 
 - In `Product.ts` add a `productSchema: ZodType<ProductRequest>`.
 - Implement it using `z.object` ([see the doc](https://zod.dev/)).
+  - Add Attributes: `name`, must be a non-empty string, and `price`, must be a positive number.
 - Pass it to the `useForm` (using option `resolver: zodResolver(productSchema)`)
 
 ### Some cleaning

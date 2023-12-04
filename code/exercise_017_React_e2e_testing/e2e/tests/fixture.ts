@@ -9,11 +9,13 @@ type PageData = {
   };
 };
 const fixture = test.extend<PageData>({
-  constants: {
-    product: {
-      name: "",
-      price: "",
-    },
+  constants: (_, use, testInfo) => {
+    return use({
+      product: {
+        name: `Product Name ${testInfo.testId}`,
+        price: "12.99",
+      },
+    });
   },
 });
 

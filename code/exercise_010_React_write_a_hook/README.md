@@ -9,3 +9,4 @@ Create a custom hook `useFetch` that given a function returning a `Promise<T>` r
   ```tsx
   const state = useFetch(productService.getAll);
   ```
+- Add the abort signal in parameter `(signal: AbortSignal) => Promise<T>`, and pass it to `productService.getAll`.

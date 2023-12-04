@@ -9,6 +9,7 @@
   ```
 - We recommend to install [VS Code ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) as we have defined some rules.
   - Or you can run it manually by running `npm run lint`
+- And the [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) code formatter extension.
 
 ### Presentation
 

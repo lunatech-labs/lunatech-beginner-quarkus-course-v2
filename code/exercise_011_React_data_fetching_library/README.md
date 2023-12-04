@@ -13,7 +13,7 @@ npm install @tanstack/react-query
 React query while manage the asynchronous state.
 
 - Remove `useFetch` and `useReducer`
-- The `AppComponent` now only provide the `QueryClient`
+- The `App` component now only provide the `QueryClient`
   ```tsx
   export const App = () => (
     <QueryClientProvider client={queryClient}>
@@ -22,7 +22,6 @@ React query while manage the asynchronous state.
   );
   ```
 - In `ProductList` fetch the products using the hook [`useQuery`](https://tanstack.com/query/latest/docs/react/guides/queries)
-- // Todo abort
 
 ### Adding mutation
 

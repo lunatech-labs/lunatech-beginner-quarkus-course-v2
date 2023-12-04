@@ -14,9 +14,10 @@ We also added a type representing an async result `AsyncResult<T, Error>`, we wi
 
 - In the `App` component, add a state representing the fetching of the product, `useState<AsyncResult<Product[]>>` initialized to `pending`.
 - Using `useEffect` and the `productService`, get the list of products and update it in the state.
+  - Dependecies of the `useEffect` should contain the state update function.
+  - The cleanup function should abort the fetch. Create an `AbortController`, and pass in the options of `productService.getAll` the `signal: controller.signal`.
+  - You can now set the return the cleanup function (`() => controller.abort()`)
 - Render correctly the different status of the state: `Pending`, `Failure` and `Success`.
-
-// Todo cleaning effect: abort
 
 #### Update products
 

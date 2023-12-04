@@ -14,10 +14,12 @@ export const App = () => {
     AsyncResult.pending(),
   );
   useEffect(() => {
+    const controller = new AbortController();
     productService
-      .getAll()
+      .getAll({ signal: controller.signal })
       .then((data) => setState(AsyncResult.success(data)))
       .catch((error) => setState(AsyncResult.failure(error)));
+    return () => controller.abort();
   }, [setState]);
 
   switch (state.type) {
