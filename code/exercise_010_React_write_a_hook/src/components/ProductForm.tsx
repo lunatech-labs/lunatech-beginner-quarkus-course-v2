@@ -15,14 +15,14 @@ export const ProductForm: FC<Props> = ({ product, onChange }) => {
     <>
       <input
         placeholder="Name"
-        value={product.name}
+        value={product.name ?? ""}
         onChange={handleUpdate("name")}
       />
       <span> - </span>
       <input
         type="number"
         placeholder="Price"
-        value={product.price}
+        value={product.price ?? ""}
         onChange={handleUpdate("price")}
       />
     </>

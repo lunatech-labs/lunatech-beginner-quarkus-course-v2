@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useReducer } from "react";
+import { FC, PropsWithChildren, useCallback, useReducer } from "react";
 import { ProductList } from "~/components/ProductList";
 import { Product } from "~/models/Product";
 import { productService } from "~/services/productService";
@@ -10,7 +10,11 @@ import {
 import { useFetch } from "./hooks/useFetch";
 
 export const App = () => {
-  const state = useFetch((signal) => productService.getAll({ signal }));
+  const getAll = useCallback(
+    (signal: AbortSignal) => productService.getAll({ signal }),
+    [],
+  );
+  const state = useFetch(getAll);
 
   switch (state.type) {
     case "Pending":

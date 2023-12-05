@@ -28,7 +28,11 @@ export const AddProductDialog: FC<Props> = ({ open, close }) => {
   return (
     <Dialog open={open}>
       <DialogTitle>Add a product</DialogTitle>
-      <Form validation={productSchema} onSubmit={handleAdd}>
+      <Form
+        validation={productSchema}
+        defaultValue={{ name: "", price: "" }}
+        onSubmit={handleAdd}
+      >
         <DialogContent>
           <Stack spacing={2}>
             <ProductForm />

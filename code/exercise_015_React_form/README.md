@@ -80,12 +80,12 @@ export const ProductComponent: FC<Props> = () => {
     return (
       <form onSubmit={handleSubmit(console.log)}>
         <Controller
-          name="name" 
+          name="name"
           control={control}
           render={({ field }) => <input {...field} />}
         />
         <Controller
-          name="price" 
+          name="price"
           control={control}
           render={({ field }) => <input type="number" {...field} />}
         />
@@ -94,8 +94,10 @@ export const ProductComponent: FC<Props> = () => {
     ```
 
     </details>
+
 - Create a new component `Input` in `src/components/form/Input.tsx`
-- Implement it using `Controlller` and `useFormContext`, and with the render prop using mui `TextField`.
+- Implement it using [`Controlller`](https://react-hook-form.com/docs/usecontroller/controller) and `useFormContext`, and with the render prop using mui `TextField`.
+  - Using Controller, we can not apply undefined to defaultValue or defaultValues at useForm.
 - In `ProductForm` replace usage of `TextField` with the newly created `Input`.
 - Use the `handleSubmit` from `useForm` get the form values.
 
@@ -114,10 +116,30 @@ We don't want to have dependencies to _React hook form_ everywhere. Let's create
 
 - Create a file `components/form/Form.tsx`
 - Add `Props<T, R>` wich accepts `defaultValues`, `validation` and a `onSubmit` function.
+  <details>
+      <summary>Solution for the expected Props</summary>
+
+  ```tsx
+  // Transform T fields to be required and accept string value.
+  export type DirtyObject<T extends object> = {
+    [P in keyof T]-?: Dirty<T[P]>;
+  };
+  export type Dirty<T> = T extends object ? DirtyObject<T> : T | string;
+
+  interface Props<T extends object, R> {
+    onSubmit: (t: T) => R | Promise<R>;
+    validation?: ZodType<T>;
+    defaultValue: DirtyObject<T>;
+  }
+  ```
+
+  </details>
+
 - Implement the component with `useForm` and `<FormProvider>`.
 - Wrap the `children` in a `<form>` component and pass `onSubmit={handleSubmit}`.
+  - You probably have some type errors on `defaultValues` and `handleSubmit` we will just ignore them using `// @ts-expect-error`
 - In `AddProductDialiog` and `EditProductDialog`:
 - Remove references to _React hook form_.
 - Wrap `ProducForm` and submit buttons in the newly created `<Form>` component.
 - Set the type of the buttons to submit and remove the onClicks.
-- We could further abstract types for props, eg `defaultValues: Partial<T>`, `resolver: (t: T) => Validate<T>`, but this requires a bit of work, and could be done later as an optional exercise.
+- We could further abstract types for props, eg `resolver: (t: T) => Validate<T>`, but this requires a bit of work, and could be done later as an optional exercise.

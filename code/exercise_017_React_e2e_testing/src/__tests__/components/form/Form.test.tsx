@@ -11,7 +11,7 @@ describe("Form", () => {
 
   it("renders input field with correct attributes", () => {
     render(
-      <Form onSubmit={vi.fn}>
+      <Form onSubmit={vi.fn} defaultValue={{ test: "" }}>
         <Input name="test" label="Test Input" />
       </Form>,
     );
@@ -25,8 +25,9 @@ describe("Form", () => {
   it("renders input field with error message", async () => {
     render(
       <Form
-        validation={z.object({ test: z.string() })}
+        validation={z.object({ test: z.string().min(1) })}
         onSubmit={() => vi.fn()}
+        defaultValue={{ test: "" }}
       >
         <Input name="test" label="Test Input" />
         <button type="submit" />
@@ -37,7 +38,7 @@ describe("Form", () => {
 
     submit();
 
-    await screen.findByText("Required");
+    await screen.findByText("String must contain at least 1 character(s)");
 
     expect(inputElement).toHaveAttribute("aria-invalid", "true");
   });
@@ -45,7 +46,7 @@ describe("Form", () => {
   it("renders input field without error message", async () => {
     const handleSubmit = vi.fn();
     render(
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} defaultValue={{ test: "" }}>
         <Input name="test" label="Test Input" />
         <button type="submit" />
       </Form>,

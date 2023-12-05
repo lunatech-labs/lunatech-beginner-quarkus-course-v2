@@ -1,25 +1,30 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PropsWithChildren } from "react";
-import { DefaultValues, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { ZodType } from "zod";
 
-interface Props<T, R> {
-  onSubmit: (t: T) => R | Promise<R>;
+export type DirtyObject<T> = T extends object
+  ? { [P in keyof T]-?: DirtyObject<T[P]> }
+  : T | string;
+
+interface Props<T> {
+  onSubmit: (t: T) => void;
   validation?: ZodType<T>;
-  defaultValue?: DefaultValues<T>;
+  defaultValue: DirtyObject<T>;
 }
 
-export function Form<T extends object, R>({
+export function Form<T extends object>({
   validation,
   onSubmit,
   defaultValue,
   children,
-}: PropsWithChildren<Props<T, R>>) {
-  const methods = useForm<T>({
+}: PropsWithChildren<Props<T>>) {
+  const methods = useForm<DirtyObject<T>, void, T>({
+    // @ts-expect-error DefaultValues<T> = T should work
     defaultValues: defaultValue,
     resolver: validation ? zodResolver(validation) : undefined,
   });
-
+  // @ts-expect-error handleSubmit should accept T => void
   const handleSubmit = methods.handleSubmit((t) => onSubmit(t));
 
   return (

@@ -10,3 +10,14 @@ Create a custom hook `useFetch` that given a function returning a `Promise<T>` r
   const state = useFetch(productService.getAll);
   ```
 - Add the abort signal in parameter `(signal: AbortSignal) => Promise<T>`, and pass it to `productService.getAll`.
+  - You should have an issue with the browser calling `/products` on every render, it's because calling: \
+    `useFetch(signal => productService.getAll({signal}))`\
+     will create a new function on every render and will update the dependencies of the `useEffect` hook.\
+     To fix it you can wrap the function using the `useCallback` hook:
+    ```tsx
+    const getAll = useCallback(
+      (signal: AbortSignal) => productService.getAll({ signal }),
+      [],
+    );
+    const state = useFetch(getAll);
+    ```
