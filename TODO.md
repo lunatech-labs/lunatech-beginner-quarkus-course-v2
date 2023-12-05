@@ -10,7 +10,7 @@
 - [ ] Add a part on e2e?
 - [ ] Add a Part V
   - [ ] Currently in experimental channels:
-    - [ ] Introduce the `use` hook, 
+    - [ ] Introduce the `use` hook,
     - [ ] Introduce `'use server'` and `'use client'` directives
     - [ ] Introduce `useFormState` hook
   - [ ] Error Boundaries
@@ -18,6 +18,3 @@
     - [ ] Higher Order Components
     - [ ] Render Props
 - [ ] Exercice 9: How do we provide the backend.
-
-- TODO marc:
-  - [ ] Check errors on every exercices
