@@ -14,4 +14,5 @@
   - [ ] Patterns:
     - [ ] Higher Order Components
     - [ ] Render Props
-- [ ] Exercice 9: How do we provide the backend.
+- [ ] From exercice 9: How do we provide the backend.
+- [ ] Exercice 19: More explanation
