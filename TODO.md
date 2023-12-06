@@ -1,6 +1,3 @@
-- [ ] Handle api responses, success/failure. Check if status is `200`, `201` ... and handle correctly.
-  - In exercices 9-11 `productService.ts`
-  - From exercice 12 `productServiceReactQuery.ts`
 - [ ] Missing slides:
   - [ ] Introduce `Typescript` (Before exercice `Adding some types`)
     - A word about PropType?

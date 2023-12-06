@@ -154,9 +154,18 @@ describe.each<ProductService>([productService])(
   },
 );
 
-function fetchResponse<T>(status: number, data: T): Response {
-  return { status: status, json: () => Promise.resolve(data) } as Response;
+function fetchResponse<T>(
+  status: number,
+  statusText: string,
+  data?: T,
+): Response {
+  return {
+    ok: status === 200,
+    status,
+    statusText,
+    json: () => Promise.resolve(data),
+  } as Response;
 }
-const ok = <T>(data: T) => fetchResponse(200, data);
-const badRequest = () => fetchResponse(400, {});
-const notFound = () => fetchResponse(404, {});
+const ok = <T>(data: T) => fetchResponse(200, "Ok", data);
+const badRequest = () => fetchResponse(400, "Bad Request");
+const notFound = () => fetchResponse(404, "Not Found");
