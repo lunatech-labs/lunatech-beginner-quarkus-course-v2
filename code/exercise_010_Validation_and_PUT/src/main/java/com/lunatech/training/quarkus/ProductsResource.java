@@ -1,7 +1,5 @@
 package com.lunatech.training.quarkus;
 
-import io.smallrye.common.annotation.Blocking;
-
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -14,14 +12,12 @@ import java.util.List;
 public class ProductsResource {
 
     @GET
-    @Blocking
     public List<Product> products() {
         return Product.listAll();
     }
 
     @GET
     @Path("{productId}")
-    @Blocking
     public Product details(@PathParam("productId") Long productId) {
         Product product = Product.findById(productId);
         if (product != null) {
