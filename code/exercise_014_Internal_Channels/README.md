@@ -10,7 +10,7 @@ We will create a _Generator_ that generates new prices for all our products ever
 
 * Pull in the class `PriceUpdate` by executing this command from the command line: `cmtc pull-template src/main/java/com/lunatech/training/quarkus/PriceUpdate.java <root folder of exercise repo>`. The `PriceUpdate` class represents an updated price for the product with the product id in the class. 
 
-* Create the file `PriceUpdateStream.java` with the following template:
+* Create the file `PriceUpdateStreams.java` with the following template:
 
 ```java
 package com.lunatech.training.quarkus;
@@ -37,7 +37,7 @@ public class PriceUpdateStreams {
 }
 ```
 
-* Implement the method `public Multi<PriceUpdate> generate()` on the `PriceUpdateStream` class, and make it return a `Multi` that emits a `PriceUpdate` item for each of the products in our database (You can hardcode it to use product ids 1 to 7) *every five seconds*, using a random price between 0 and 100.
+* Implement the method `public Multi<PriceUpdate> generate()` on the `PriceUpdateStreams` class, and make it return a `Multi` that emits a `PriceUpdate` item for each of the products in our database (You can hardcode it to use product ids 1 to 7) *every five seconds*, using a random price between 0 and 100.
   
   Tip, look at the `Multi.createFrom().ticks()` method!
   Note that the `print` method has an `@Incoming` annotation that matches the `@Outgoing` from the `generate` method. Running the application should print seven lines to the console every five seconds, each line being a price update for a product. Run the app to try this :)
@@ -68,14 +68,7 @@ Finally, we will create a `PriceUpdatesResource` class, so we can expose the pri
       Multi<PriceUpdate> priceUpdates;
   
 * `@Channel` is also a Reactive Messaging annotation, and Quarkus will connect this `Multi` to the 'price-updates' channel. This is an alternative method to receive the items in that channel (different from how we did it with an `@Incoming` annotation on the `print` method!)
-* Next, add this method
-
-      @GET
-      @Produces(MediaType.SERVER_SENT_EVENTS)
-      @RestSseElementType(MediaType.APPLICATION_JSON)
-      public Multi<PriceUpdate> prices() {
-        return priceUpdates;
-      }
+* Next, add a method in `PriceUpdatesResource` that will expose the price updates as Server Sent Events. You can use the example in `ListenNotifyResource` from the previous exercise as inspiration
 
 * Now, connect to this endpoint using Curl:
 
