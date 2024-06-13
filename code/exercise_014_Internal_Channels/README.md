@@ -6,7 +6,7 @@ In an ever-demanding market, we just can’t have a furniture store with fixed p
 
 We will create a _Generator_ that generates new prices for all our products every five seconds, and connect this stream to other components.
 
-* Add the `quarkus-smallrye-reactive-messaging` extension to your `pom.xml`
+* Add the `quarkus-messaging` extension to your `pom.xml`
 
 * Pull in the class `PriceUpdate` by executing this command from the command line: `cmtc pull-template src/main/java/com/lunatech/training/quarkus/PriceUpdate.java <root folder of exercise repo>`. The `PriceUpdate` class represents an updated price for the product with the product id in the class. 
 
