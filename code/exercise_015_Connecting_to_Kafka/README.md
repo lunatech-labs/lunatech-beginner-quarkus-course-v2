@@ -12,18 +12,10 @@ In this exercise, we will connect our price processing components to Kafka. For 
     - Change the channel name in the `@Channel` annotation to `price-updates-in`
 * Add the following config:
 
-      mp.messaging.outgoing.raw-price-updates-out.connector=smallrye-kafka
       mp.messaging.outgoing.raw-price-updates-out.topic=raw-prices
-      mp.messaging.outgoing.raw-price-updates-out.value.serializer=io.quarkus.kafka.client.serialization.ObjectMapperSerializer
-      mp.messaging.incoming.raw-price-updates-in.connector=smallrye-kafka
       mp.messaging.incoming.raw-price-updates-in.topic=raw-prices
-      mp.messaging.incoming.raw-price-updates-in.value.deserializer=com.lunatech.training.quarkus.PriceUpdateDeserializer
-      mp.messaging.outgoing.price-updates-out.connector=smallrye-kafka
       mp.messaging.outgoing.price-updates-out.topic=prices
-      mp.messaging.outgoing.price-updates-out.value.serializer=io.quarkus.kafka.client.serialization.ObjectMapperSerializer
-      mp.messaging.incoming.price-updates-in.connector=smallrye-kafka
       mp.messaging.incoming.price-updates-in.topic=prices
-      mp.messaging.incoming.price-updates-in.value.deserializer=com.lunatech.training.quarkus.PriceUpdateDeserializer
 
 * Execute the cURL command again from the previous exercise:
 
