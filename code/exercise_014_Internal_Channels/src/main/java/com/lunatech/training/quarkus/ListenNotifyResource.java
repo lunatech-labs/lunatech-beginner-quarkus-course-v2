@@ -5,7 +5,6 @@ import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.pgclient.PgConnection;
 import io.vertx.mutiny.pgclient.PgPool;
-import io.vertx.mutiny.sqlclient.SqlConnection;
 import io.vertx.pgclient.PgNotification;
 import org.jboss.resteasy.reactive.RestStreamElementType;
 
@@ -26,16 +25,14 @@ public class ListenNotifyResource {
     public Multi<JsonObject> listen(@PathParam("channel") String channel) {
         return client
                 .getConnection()
+                .map(PgConnection::cast)
                 .toMulti()
-                .flatMap(connection -> {
-                    Multi<PgNotification> notifications = Multi.createFrom().
-                            emitter(c -> toPgConnection(connection).notificationHandler(c::emit));
-
-                    return connection.query("LISTEN " + channel)
-                            .execute()
-                            .toMulti()
-                            .flatMap(__ -> notifications);
-                })
+                .flatMap(connection ->
+                    connection.query("LISTEN " + channel)
+                        .execute()
+                        .toMulti()
+                        .flatMap(__ -> streamNotifications(connection))
+                )
                 .map(PgNotification::toJson);
     }
 
@@ -43,14 +40,15 @@ public class ListenNotifyResource {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.WILDCARD)
-    public Uni<String> notif(@PathParam("channel") String channel, String stuff) {
+    public Uni<String> notify(@PathParam("channel") String channel, String stuff) {
         return client.preparedQuery("NOTIFY " + channel +  ", $$" + stuff + "$$")
                 .execute()
                 .map(rs -> "Posted to " + channel + " channel");
     }
 
-    // We have to do some type juggling here. Solved in the mutiny client v2.
-    PgConnection toPgConnection(SqlConnection sqlConnection) {
-        return new PgConnection((io.vertx.pgclient.PgConnection) sqlConnection.getDelegate());
+    // Use PgConnection::notificationHandler to register a handler that emits PgNotification values on a Multi stream
+    private Multi<PgNotification> streamNotifications(PgConnection connection) {
+        return Multi.createFrom()
+            .emitter(multiEmitter -> connection.notificationHandler(multiEmitter::emit));
     }
 }
