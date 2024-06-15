@@ -2,7 +2,6 @@ package com.lunatech.training.quarkus;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
-import io.smallrye.common.annotation.Blocking;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -20,14 +19,12 @@ public class ProductsResource {
     Template details;
 
     @GET
-    @Blocking
     public TemplateInstance products() {
         return catalogue.data("products", Product.listAll());
     }
 
     @GET
     @Path("{productId}")
-    @Blocking
     public TemplateInstance details(@PathParam("productId") Long productId) {
         Product product = Product.findById(productId);
         if(product != null) {
