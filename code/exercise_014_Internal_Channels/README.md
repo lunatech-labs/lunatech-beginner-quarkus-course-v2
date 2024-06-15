@@ -37,7 +37,7 @@ public class PriceUpdateStreams {
 }
 ```
 
-* Implement the method `public Multi<PriceUpdate> generate()` on the `PriceUpdateStreams` class, and make it return a `Multi` that emits a `PriceUpdate` item *every five seconds*, using a random price between 0 and 100, for each of the products in our database (You can hardcode the product IDs - use `curl localhost:8080/products` to discover the product IDs saved in the database) .
+* Implement the method `public Multi<PriceUpdate> generate()` on the `PriceUpdateStreams` class, and make it return a `Multi` that emits a `PriceUpdate` item *every five seconds*, using a random price between 0 and 100, for each of the products in our database (You can hardcode the product IDs 1 to 7 inclusive) .
   
   Tip, look at the `Multi.createFrom().ticks()` method!
   Note that the `print` method has an `@Incoming` annotation that matches the `@Outgoing` from the `generate` method. Running the application should print seven lines to the console every five seconds, each line being a price update for a product. Run the app to try this :)
