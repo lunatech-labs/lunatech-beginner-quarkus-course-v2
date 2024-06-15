@@ -7,7 +7,7 @@ import io.vertx.mutiny.pgclient.PgConnection;
 import io.vertx.mutiny.pgclient.PgPool;
 import io.vertx.mutiny.sqlclient.SqlConnection;
 import io.vertx.pgclient.PgNotification;
-import org.jboss.resteasy.reactive.RestSseElementType;
+import org.jboss.resteasy.reactive.RestStreamElementType;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -22,7 +22,7 @@ public class ListenNotifyResource {
     @Path("{channel}")
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)
-    @RestSseElementType(MediaType.APPLICATION_JSON)
+    @RestStreamElementType(MediaType.APPLICATION_JSON)
     public Multi<JsonObject> listen(@PathParam("channel") String channel) {
         return client
                 .getConnection()
