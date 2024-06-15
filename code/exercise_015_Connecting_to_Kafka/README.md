@@ -1,9 +1,8 @@
 ## Exercise 15: Kafka
 
-In this exercise, we will connect our price processing components to Kafka. For this we will use the `smallrye-reactive-messaging-kafka` extension to connect our reactive messaging components to Kafka. We will then rely on Dev Services Kafka to automatically start a Kafka broker and to automatically configure the application to find the broker.
+In this exercise, we will connect our price processing components to Kafka. For this we will use the `quarkus-messaging-kafka` extension to connect our reactive messaging components to Kafka. We will then rely on Dev Services Kafka to automatically start a Kafka broker and to automatically configure the application to find the broker.
 
-* Add the `quarkus-smallrye-reactive-messaging-kafka` extension to your `pom.xml`
-* Pull in the class `PriceUpdateDeserializer` by executing this command from the command line: `cmtc pull-template src/main/java/com/lunatech/training/quarkus/PriceUpdateDeserializer.java <root folder of exercise repo>`.
+* Add the `quarkus-messaging-kafka` extension to your `pom.xml`
 * On the class `PriceUpdateStreams`:
     - On the `generate` method, change the `@Outgoing` channel name to `raw-price-updates-out`
     - On the `process` method, change the `@Incoming` channel name to `raw-price-updates-in`

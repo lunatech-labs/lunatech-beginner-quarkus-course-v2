@@ -1,10 +1,8 @@
 ## Exercise 5: Products from the database, using Hibernate + Panache
 
-In this exercise, we will start reading products from the database, rather than from the hardcoded `Products` class. We will use Hibernate + Panache as the ORM, with a Postgres database that we run on Docker using Docker Compose.
+In this exercise, we will start reading products from the database, rather than from the hardcoded `Products` class. We will use Hibernate + Panache as the ORM, with a Postgres database that will be started up in dev mode as a Dev Service.
 
-* In the root of the student app project, there is a `docker-compose.yml`, which contains a single service; a postgres database.
-* Start it up using: `docker-compose up --detach`
-* Next, we need to add some extensions. Add the following to your `pom.xml` in the dependencies section:
+* We need to add some extensions. Add the following to your `pom.xml` in the dependencies section:
 
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -15,12 +13,8 @@ In this exercise, we will start reading products from the database, rather than 
       <artifactId>quarkus-jdbc-postgresql</artifactId>
     </dependency>
 
-* Now we need to tell Quarkus where our database lives. Add the following to your `application.properties’:
+* In dev mode we will configure Hibernate to recreate the database with every application startup. The Dev Service takes care of configuring the application so it can connect to the database. So you can just add the following to your `application.properties’:
 
-        quarkus.datasource.db-kind=postgresql
-        quarkus.datasource.username=postgres
-        quarkus.datasource.password=postgres
-        quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:8765/postgres
         quarkus.hibernate-orm.database.generation = drop-and-create
   
 * Next, make your existing `Product` class extend from `PanacheEntity`, and add an `@Entity` annotation. This makes your `Product` class suitable for _Active Record_-style persistence, where the class you persist has static methods to interact with the storage.

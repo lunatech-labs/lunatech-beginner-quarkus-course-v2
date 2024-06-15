@@ -6,10 +6,9 @@ Let's have a look at the existing code...
 
 * This repository contains the start of the student app.
 * Import the application in your IDE
-* Run the application by execusting `mvn quarkus:dev` in the
+* Run the application by execusting `./mvnw quarkus:dev` in the
   folder `code` in the project.
-* Browse to http://localhost:8080/. What do you see?
-* Take a look at the config in http://localhost:8080/q/dev/io.quarkus.quarkus-vertx-http/config
+* Browse to http://localhost:8080/q/dev-ui. What do you see?
 
 Now that we have taken our first step in Quarkus, let's
 move to the next exercise by executing

@@ -8,7 +8,6 @@ In this exercise we will see a method to deal with ‘broken’ messages.
 * Add the following config:
 
       mp.messaging.incoming.raw-price-updates-in.failure-strategy=dead-letter-queue
-      mp.messaging.incoming.raw-price-updates-in.dead-letter-queue.value.serializer=io.quarkus.kafka.client.serialization.ObjectMapperSerializer
 
 * Restart the app, and observe that the stream works again (curl http://localhost:8080/prices), although now most of the times you end up with less than 7 updates per 5 seconds. The failures end up in the topic `dead-letter-topic-raw-price-updates-in`. You can easily inspect it with the Kafka Dev UI - http://localhost:8080/q/dev-ui/io.quarkus.quarkus-kafka-client/topics
 
