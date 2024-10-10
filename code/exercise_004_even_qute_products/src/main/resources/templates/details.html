@@ -1,8 +1,7 @@
-<html lang="en">
-  <head>
-    <title>{product.name} - Details</title>
-  </head>
-  <body>
+{#include layout}
+  {#title}{product.name} - Details{/}
+
+  {#body}
     <h1>{product.name}</h1>
     <dl>
       <dt>Product ID</dt>
@@ -10,7 +9,7 @@
       <dt>Description</dt>
       <dd>{product.description}</dd>
       <dt>Price</dt>
-      <dd>&euro; {product.price}</dd>
+      <dd>{product.price.monetary}</dd>
     </dl>
-  </body>
-</html>
+  {/body}
+{/include}
